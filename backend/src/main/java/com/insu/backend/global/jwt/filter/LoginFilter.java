@@ -73,7 +73,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
 
-        String accessToken = jwtUtil.createJwt("access", memberId, role, 60*60*1000L); // 1시간 유효
+        String accessToken = jwtUtil.createJwt("access", memberId, role, 60*1000L); // 1시간 유효
         String refreshToken = jwtUtil.createJwt("refresh", memberId, role, 24*60*60*1000L); // 1일 유효
         addRefreshEntity(memberId, refreshToken, 24*60*60*1000L);
 
@@ -86,8 +86,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         SuccessResponse successResponse = SuccessResponse.builder()
                         .code(String.valueOf(HttpStatus.OK.value()))
-                                .message("로그인에 성공했습니다.")
-                                .build();
+                        .message("로그인에 성공했습니다.")
+                        .build();
 
         response.getWriter().write(new ObjectMapper().writeValueAsString(successResponse));
     }
@@ -101,7 +101,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         response.setCharacterEncoding("UTF-8");
 
         ErrorResponse errorResponse = ErrorResponse.builder()
-                .code(String.valueOf(HttpServletResponse.SC_UNAUTHORIZED))
+                .code("401")
                 .message("로그인에 실패했습니다.")
                 .build();
 

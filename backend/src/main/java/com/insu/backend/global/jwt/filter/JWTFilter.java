@@ -1,6 +1,8 @@
 package com.insu.backend.global.jwt.filter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.insu.backend.global.jwt.dto.CustomUserDetails;
+import com.insu.backend.global.response.ErrorResponse;
 import com.insu.backend.member.entity.Member;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -15,7 +17,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -38,11 +39,19 @@ public class JWTFilter extends OncePerRequestFilter {
         } catch (ExpiredJwtException e) {
             log.info(">>>>> accessToken is expired");
 
-            PrintWriter writer = response.getWriter();
-            writer.println("토큰 만료되었습니다. 다시 로그인 해주세요.");
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401코드 반환
+
+            ErrorResponse errorResponse = ErrorResponse.builder()
+                    .code("401")
+                    .message("토큰 만료되었습니다. 다시 로그인 해주세요.")
+                    .build();
+
+            response.getWriter().write(new ObjectMapper().writeValueAsString(errorResponse));
             return;
         }
+
         log.info(">>>>> accessToken is valid");
 
         String memberId = jwtUtil.getMemberId(accessToken);
