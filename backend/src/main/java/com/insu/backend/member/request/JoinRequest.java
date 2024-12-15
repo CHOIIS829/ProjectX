@@ -1,11 +1,13 @@
 package com.insu.backend.member.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter
-@Builder
 public class JoinRequest {
 
     @NotBlank(message = "아이디를 입력해주세요.")
@@ -18,5 +20,11 @@ public class JoinRequest {
     private String memberName;
 
     private String email;
+
+    private String phone;
+
+    private String git;
+
+    private List<String> skills;
 
 }
