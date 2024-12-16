@@ -1,10 +1,10 @@
 package com.insu.backend.global.exception;
 
-public class InvalidToken extends BaseException{
+public class InvalidTokenException extends BaseException{
 
     private static final String MESSAGE = "유효하지 않은 토큰입니다.";
 
-    public InvalidToken() {
+    public InvalidTokenException() {
         super(MESSAGE);
     }
 
