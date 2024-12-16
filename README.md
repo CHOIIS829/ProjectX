@@ -3,8 +3,10 @@
 - java : 17
 
 #api
-- join : /join
-- login : /login
+- 회원가입 : /join
+- 로그인 : /login
+
+- 이메일인증번호 : /emailCheck
 
 #Frontend
 - 실행시 cd frontend 
