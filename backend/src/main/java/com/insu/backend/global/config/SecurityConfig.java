@@ -55,8 +55,10 @@ public class SecurityConfig {
         http.formLogin(AbstractHttpConfigurer::disable);
         http.httpBasic(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/", "/join", "/login", "/reissue").permitAll()
-                .requestMatchers("/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+//                .requestMatchers("/", "/join", "/login", "/reissue").permitAll()
+//                .requestMatchers("/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+//                .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                .requestMatchers("/**").permitAll()
                 .anyRequest().authenticated());
 
         http.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

@@ -3,6 +3,7 @@ package com.insu.backend.member.controller;
 import com.insu.backend.global.response.SuccessResponse;
 import com.insu.backend.member.request.JoinRequest;
 import com.insu.backend.member.service.MemberService;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ public class AuthController {
     private final MemberService memberService;
 
     @PostMapping("/join")
-    public ResponseEntity<SuccessResponse> join(@RequestBody JoinRequest request) {
+    public ResponseEntity<SuccessResponse> join(@RequestBody @Valid JoinRequest request) {
         memberService.join(request);
 
         return ResponseEntity.ok(SuccessResponse.builder()
