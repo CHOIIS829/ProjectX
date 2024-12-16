@@ -17,7 +17,7 @@ public class MailController {
 
     private final MailService mailService;
 
-    @PostMapping("/emailCheck")
+    @PostMapping("/sendEmail")
     public String emailCheck(@RequestBody MailDTO mailDTO) throws MessagingException {
         String authCode = mailService.sendMail(mailDTO.getEmail());
         return authCode;
