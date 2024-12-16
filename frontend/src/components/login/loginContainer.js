@@ -44,9 +44,10 @@ const ControlContainer = styled.div`
 `;
 
 /* 
-    Control Container 수정 필요 
-    button input 사이즈 조정 필요 
-    global style 로 적용시 fontfamily 적용 안됨    
+    - Control Container 매뉴들 routeData 에서 가져오기 
+    - button input 사이즈 조정 필요 
+    - global style 로 적용시 fontfamily 적용 안됨 확인 필요
+    - Logo 사이즈 조정 필요 props 전달하여 사이즈 조정 필요    
  */
 
 export const LoginContainer = () => {
