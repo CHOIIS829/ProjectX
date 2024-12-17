@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 const HeaderContainer = styled.header`
     background-color: yellow;
-    height: 7vh;
+    height: 8vh;
     display: flex;
     justify-content: space-between;
     align-items: center;
