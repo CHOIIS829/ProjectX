@@ -5,13 +5,18 @@ const Container = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 80vh;
+    height: 100vh;
+    width: 100%;
 `;
 
+/*
+    - Container CSS 공통 빼기 
+*/
+
 export const Login = () => {
-    return(
+    return (
         <Container>
-            <LoginContainer/>
+            <LoginContainer />
         </Container>
     );
 };

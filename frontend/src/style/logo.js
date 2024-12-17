@@ -3,21 +3,28 @@ import styled from "styled-components";
 
 const LogoContainer = styled.div`
     cursor: pointer;
-    h2{
+    h1, h2, h3 {
         color: ${props => props.$header};
-    };
-    span{
+    }
+    span {
         color: ${props => props.$span};
     }
 `;
 
+// need to review code on the props
+const DynamicHeading = ({ tag: Tag, children, ...props }) => {
+    return <Tag {...props}>{children}</Tag>;
+};
+
 export const Logo = (props) => {
-
     const navigate = useNavigate();
+    const { header, span, tag } = props;
 
-    return(
-        <LogoContainer $header={props.header} $span={props.span} onClick={() => navigate("/")}>
-            <h2>project<span>X</span></h2>
+    return (
+        <LogoContainer $header={header} $span={span} onClick={() => navigate("/")}>
+            <DynamicHeading tag={tag}>
+                project<span>X</span>
+            </DynamicHeading>
         </LogoContainer>
     );
 };

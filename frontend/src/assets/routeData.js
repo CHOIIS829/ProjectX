@@ -25,3 +25,20 @@ export const RouteData = {
         path: "/find-password"
     }
 };
+
+/*
+    라우터 데이터 필터링 함수
+    - data: RouteData 객체
+    - paths: 필터링할 path 문자열
+    - 필터링된 데이터 반환
+*/
+export const filterRoutes = (...paths) => {
+    return Object.values(RouteData).filter(route => {
+        return paths.includes(route.path);
+    });
+};
+
+/*
+    라우터 데이터 반환 함수
+    - 고민 필요
+*/

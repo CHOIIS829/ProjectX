@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from "styled-components";
 import { Logo } from "../../style/logo";
-import { RouteData } from "../../assets/routeData";
+import { filterRoutes } from "../../assets/routeData";
 import { useNavigate } from "react-router-dom";
 
 const HeaderContainer = styled.header`
     background-color: yellow;
-    height: 5vh;
+    height: 7vh;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -14,6 +14,7 @@ const HeaderContainer = styled.header`
     font-weight: bold;
     color: white;
     background-color: var(--main-color);
+    
 `;
 
 const RouteContainer = styled.div`
@@ -21,31 +22,30 @@ const RouteContainer = styled.div`
     gap: 10px;
     cursor: pointer;
     h3:nth-child(odd):hover {
-        color: black;
+        color: lightgray;
     }
 `;
 
 export const Header = () => {
     const navigate = useNavigate();
 
-    const filteredRoutes = Object.values(RouteData).filter(route => {
-        return route.path === '/login' || route.path === '/signup';
-    });
-
-    const routeList = filteredRoutes.map((route, index) => {
-        return (
-            <React.Fragment key={route.path}>
-                <h3 onClick={() => navigate(route.path)}>{route.titleEnglish}</h3>
-                {index < filteredRoutes.length - 1 && <span>|</span>}
-            </React.Fragment>
-        );
-    });
+    const makeRoutes = () => {
+        const filteredRoutes = filterRoutes('/login', '/signup');
+        return filteredRoutes.map((route, index) => {
+            return (
+                <React.Fragment key={route.path}>
+                    <h3 onClick={() => navigate(route.path)}>{route.titleEnglish}</h3>
+                    {index < filteredRoutes.length - 1 && <span>|</span>}
+                </React.Fragment>
+            );
+        });
+    };
 
     return (
         <HeaderContainer>
-            <Logo header="white" span="black" />
+            <Logo header="white" span="black" tag="h2"/>
             <RouteContainer>
-                {routeList}
+                {makeRoutes()}
             </RouteContainer>
         </HeaderContainer>
     );
