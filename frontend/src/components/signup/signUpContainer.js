@@ -71,8 +71,9 @@ const FormContainers = styled.div`
     }
 `;
 
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-const gitUrlRegex = /^(https:\/\/|git@)(github\.com|bitbucket\.org|gitlab\.com)[:\/][\w.-]+\/[\w.-]+(\.git)?$/;
+const gitUrlRegex = /^https:\/\/github\.com\/[\w-]+$/;
 
 export const SignUpContainer = () => {
     const [id, setId] = useState("");
@@ -87,6 +88,7 @@ export const SignUpContainer = () => {
     const [passwordCheckValidation, setPasswordCheckValidation] = useState(false);
     const [telCheckValidation, setTelCheckValidation] = useState(false);
     const [gitUrlValidation, setGitUrlValidation] = useState(false);
+    const [emailBlurred, setEmailBlurred] = useState(false);
     const [passwordBlurred, setPasswordBlurred] = useState(false);
     const [passwordCheckBlurred, setPasswordCheckBlurred] = useState(false);
     const [gitUrlBlurred, setGitUrlBlurred] = useState(false);
@@ -101,6 +103,12 @@ export const SignUpContainer = () => {
         const value = e.target.value;
         setPasswordCheck(value);
         setPasswordCheckValidation(value === password);
+    };
+
+    const handleEmailChange = (e) => {
+        const value = e.target.value;
+        setEmail(value);
+        setEmailValidation(emailRegex.test(value));
     };
 
     const handleGitUrlChange = (e) => {
@@ -126,10 +134,18 @@ export const SignUpContainer = () => {
                 <input type="text" placeholder="아이디를 입력하세요." />
                 <button>중복 확인</button>
             </FormContainers>
-            <FormContainers>
-                <input type="text" placeholder="이메일 입력하세요." />
-                <button>중복 확인</button>
-            </FormContainers>
+            <input
+                type="text"
+                placeholder="이메일 입력하세요."
+                value={email}
+                onChange={handleEmailChange}
+                onBlur={(e) => handleBlur(e, setEmailBlurred)}
+            />
+            {emailBlurred && (
+                emailValidation ? 
+                <p style={{ color: 'green' }}>올바른 이메일 입니다.</p> :
+                <p style={{ color: 'red' }}>올바르지 않은 이메일 입니다.</p>
+            )}            
             <input
                 type="password"
                 placeholder="비밀번호를 입력하세요."
