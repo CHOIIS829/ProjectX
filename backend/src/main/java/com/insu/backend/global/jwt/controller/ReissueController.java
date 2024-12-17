@@ -1,10 +1,9 @@
 package com.insu.backend.global.jwt.controller;
 
-import com.insu.backend.global.exception.InvalidToken;
+import com.insu.backend.global.exception.InvalidTokenException;
 import com.insu.backend.global.jwt.entity.Refresh;
 import com.insu.backend.global.jwt.filter.JWTUtil;
 import com.insu.backend.global.jwt.repository.RefreshRepository;
-import com.insu.backend.global.response.ErrorResponse;
 import com.insu.backend.global.response.SuccessResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,25 +38,25 @@ public class ReissueController {
 
         if(refresh == null) {
             log.error(">>>>> refresh-token이 없습니다.");
-            throw new InvalidToken();
+            throw new InvalidTokenException();
         }
 
         if(jwtUtil.isExpired(refresh)) {
             log.error(">>>>> refresh-token이 만료되었습니다.");
             refreshRepository.deleteByRefresh(refresh);
-            throw new InvalidToken();
+            throw new InvalidTokenException();
         }
 
         log.info(jwtUtil.getCategory(refresh));
 
         if(!jwtUtil.getCategory(refresh).equals("refresh")) {
             log.error(">>>>> refresh-token이 아닙니다.");
-            throw new InvalidToken();
+            throw new InvalidTokenException();
         }
 
         if(!refreshRepository.existsByRefresh(refresh)) {
             log.error(">>>>> 존재하지 않는 refresh-token입니다.");
-            throw new InvalidToken();
+            throw new InvalidTokenException();
         }
 
         log.info(">>>>> valid refresh token");
