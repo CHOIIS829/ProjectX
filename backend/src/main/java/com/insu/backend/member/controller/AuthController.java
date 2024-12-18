@@ -48,6 +48,5 @@ public class AuthController {
                 .message("아이디 찾기 성공")
                 .data(Map.of("memberId", memberId))
                 .build());
-
     }
 }

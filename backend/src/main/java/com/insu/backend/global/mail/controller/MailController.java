@@ -1,14 +1,19 @@
 package com.insu.backend.global.mail.controller;
 
-import com.insu.backend.global.mail.dto.MailDTO;
+import com.insu.backend.global.mail.request.CheckEmailRequest;
 import com.insu.backend.global.mail.service.MailService;
+import com.insu.backend.global.response.SuccessResponse;
 import jakarta.mail.MessagingException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class MailController {
@@ -16,8 +21,18 @@ public class MailController {
     private final MailService mailService;
 
     @PostMapping("/sendEmail")
-    public String emailCheck(@RequestBody MailDTO mailDTO) throws MessagingException {
-        String authCode = mailService.sendMail(mailDTO.getEmail());
-        return authCode;
+    public String emailCheck(String email) throws MessagingException {
+        log.info(">>>>> [INFO] email : {}", email);
+        return mailService.sendMail(email);
+    }
+
+    @PostMapping("/checkEmail")
+    public ResponseEntity<SuccessResponse<Void>> checkMail(@RequestBody @Valid CheckEmailRequest request) {
+        mailService.checkMail(request);
+
+        return ResponseEntity.ok(SuccessResponse.<Void>builder()
+                        .code("200")
+                        .message("인증 성공")
+                        .build());
     }
 }

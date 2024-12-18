@@ -1,6 +1,10 @@
 package com.insu.backend.global.mail.service;
 
 import com.insu.backend.global.exception.FailMailSendException;
+import com.insu.backend.global.exception.InvalidEmailCodeException;
+import com.insu.backend.global.mail.entity.EmailRandomCode;
+import com.insu.backend.global.mail.repository.EmailRandomCodeRepository;
+import com.insu.backend.global.mail.request.CheckEmailRequest;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -17,15 +21,22 @@ import java.util.Random;
 public class MailService {
 
     private final JavaMailSender javaMailSender;
+    private final EmailRandomCodeRepository emailRandomCodeRepository;
     private static final String SENDER_EMAIL = "vmfhwprxmX@gmail.com";
 
     public String sendMail(String sendEmail) throws MessagingException{
         String number = createNumber();
 
+        EmailRandomCode emailRandomCode = EmailRandomCode.builder()
+                        .email(sendEmail)
+                        .code(number)
+                        .build();
+
         MimeMessage message = createMail(sendEmail, number);
 
         try {
             javaMailSender.send(message);
+            emailRandomCodeRepository.save(emailRandomCode);
         }catch (MailException e) {
             log.error(">>>>> [ERROR] Fail to send mail : {}", e.getMessage());
             throw new FailMailSendException();
@@ -63,5 +74,12 @@ public class MailService {
             }
         }
         return key.toString();
+    }
+
+    public void checkMail(CheckEmailRequest request) {
+        EmailRandomCode emailRandomCode = emailRandomCodeRepository.findByEmailAndCode(request.getEmail(), request.getCode())
+                .orElseThrow(InvalidEmailCodeException::new);
+
+        emailRandomCodeRepository.delete(emailRandomCode);
     }
 }
