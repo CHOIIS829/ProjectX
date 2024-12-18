@@ -25,8 +25,13 @@ public class AuthController {
                 .build());
     }
 
-    @GetMapping("/hello")
-    public ResponseEntity<String> hello() {
-        return ResponseEntity.ok("hello");
+    @PostMapping("/checkId")
+    public ResponseEntity<SuccessResponse> checkId(String memberId) {
+        memberService.checkId(memberId);
+
+        return ResponseEntity.ok(SuccessResponse.builder()
+                .code("200")
+                .message("사용 가능한 아이디입니다.")
+                .build());
     }
 }

@@ -25,16 +25,16 @@ public class MemberService {
 
     public void join(JoinRequest request) {
 
-        if (memberRepository.existsByMemberId(request.getMemberId())) {
-            throw new AlreadyExistMemberIdException();
-        }
+//        if (memberRepository.existsByMemberId(request.getMemberId())) {
+//            throw new AlreadyExistMemberIdException();
+//        }
 
         Member member = Member.builder()
                 .memberId(request.getMemberId())
                 .memberPwd(encoder.encode(request.getMemberPwd()))
                 .memberName(request.getMemberName())
                 .email(request.getEmail())
-                .phone(request.getPhone())
+//                .phone(request.getPhone())
                 .git(request.getGit())
                 .role("ROLE_ADMIN")
                 .build();
@@ -58,4 +58,9 @@ public class MemberService {
 
     }
 
+    public void checkId(String memberId) {
+        if(memberRepository.existsByMemberId(memberId)) {
+            throw new AlreadyExistMemberIdException();
+        }
+    }
 }
