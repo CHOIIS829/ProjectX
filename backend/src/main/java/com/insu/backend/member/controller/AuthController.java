@@ -1,10 +1,13 @@
 package com.insu.backend.member.controller;
 
 import com.insu.backend.global.response.SuccessResponse;
+import com.insu.backend.member.request.FIndPwRequest;
 import com.insu.backend.member.request.FindIdRequest;
 import com.insu.backend.member.request.JoinRequest;
 import com.insu.backend.member.service.MemberService;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
+import jakarta.validation.executable.ValidateOnExecution;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
@@ -47,6 +50,16 @@ public class AuthController {
                 .code("200")
                 .message("아이디 찾기 성공")
                 .data(Map.of("memberId", memberId))
+                .build());
+    }
+
+    @PostMapping("/findPw")
+    public ResponseEntity<SuccessResponse<Void>> findPw(@RequestBody @Valid FIndPwRequest request) throws MessagingException {
+        memberService.findPw(request);
+
+        return ResponseEntity.ok(SuccessResponse.<Void>builder()
+                .code("200")
+                .message("비밀번호 찾기 성공")
                 .build());
     }
 }

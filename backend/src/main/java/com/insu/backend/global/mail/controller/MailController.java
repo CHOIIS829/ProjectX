@@ -7,6 +7,7 @@ import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,9 +22,13 @@ public class MailController {
     private final MailService mailService;
 
     @PostMapping("/sendEmail")
-    public String emailCheck(String email) throws MessagingException {
-        log.info(">>>>> [INFO] email : {}", email);
-        return mailService.sendMail(email);
+    public ResponseEntity<SuccessResponse<Void>> emailCheck(String email) throws MessagingException {
+        mailService.sendMail(email);
+
+        return ResponseEntity.ok(SuccessResponse.<Void>builder()
+                        .code("200")
+                        .message("메일 전송 성공")
+                        .build());
     }
 
     @PostMapping("/checkEmail")

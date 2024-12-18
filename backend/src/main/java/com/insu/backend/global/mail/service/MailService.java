@@ -24,7 +24,7 @@ public class MailService {
     private final EmailRandomCodeRepository emailRandomCodeRepository;
     private static final String SENDER_EMAIL = "vmfhwprxmX@gmail.com";
 
-    public String sendMail(String sendEmail) throws MessagingException{
+    public void sendMail(String sendEmail) throws MessagingException{
         String number = createNumber();
 
         EmailRandomCode emailRandomCode = EmailRandomCode.builder()
@@ -32,7 +32,7 @@ public class MailService {
                         .code(number)
                         .build();
 
-        MimeMessage message = createMail(sendEmail, number);
+        MimeMessage message = createMailToAuth(sendEmail, number);
 
         try {
             javaMailSender.send(message);
@@ -41,11 +41,20 @@ public class MailService {
             log.error(">>>>> [ERROR] Fail to send mail : {}", e.getMessage());
             throw new FailMailSendException();
         }
-
-        return number;
     }
 
-    public MimeMessage createMail(String mail, String number) throws MessagingException {
+    public void sendNewPasswordMail(String sendEmail, String newPassword) throws MessagingException {
+        MimeMessage message = createMailToPw(sendEmail, newPassword);
+
+        try {
+            javaMailSender.send(message);
+        } catch (MailException e) {
+            log.error(">>>>> [ERROR] Fail to send mail : {}", e.getMessage());
+            throw new FailMailSendException();
+        }
+    }
+
+    public MimeMessage createMailToAuth(String mail, String number) throws MessagingException {
         MimeMessage message = javaMailSender.createMimeMessage();
 
         message.setFrom(SENDER_EMAIL);
@@ -54,6 +63,21 @@ public class MailService {
         String body = "";
         body += "<h1>요청하신 인증 번호입니다.</h1>";
         body += "<h2>인증 번호: " + number + "</h2>";
+        body += "<h3>감사합니다.</h3>";
+        message.setText(body, "UTF-8", "html");
+
+        return message;
+    }
+
+    public MimeMessage createMailToPw(String mail, String password) throws MessagingException {
+        MimeMessage message = javaMailSender.createMimeMessage();
+
+        message.setFrom(SENDER_EMAIL);
+        message.setRecipients(MimeMessage.RecipientType.TO, mail);
+        message.setSubject("임시 비밀번호 발송");
+        String body = "";
+        body += "<h1>요청하신 임시 비밀번호입니다.</h1>";
+        body += "<h2>비밀번호: " + password + "</h2>";
         body += "<h3>감사합니다.</h3>";
         message.setText(body, "UTF-8", "html");
 

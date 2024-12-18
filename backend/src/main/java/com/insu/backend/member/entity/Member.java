@@ -40,4 +40,9 @@ public class Member extends BaseEntity {
         this.git = git;
         this.role = role;
     }
+
+    // 비밀번호 변경
+    public void changePassword(String password) {
+        this.memberPwd = password;
+    }
 }
