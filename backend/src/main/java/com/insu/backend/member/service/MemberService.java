@@ -5,6 +5,7 @@ import com.insu.backend.member.entity.Member;
 import com.insu.backend.member.entity.MemberSkill;
 import com.insu.backend.member.repository.MemberRepository;
 import com.insu.backend.member.repository.MemberSkillRepository;
+import com.insu.backend.member.request.FindIdRequest;
 import com.insu.backend.skill.entity.Skill;
 import com.insu.backend.skill.repository.SkillRepository;
 import com.insu.backend.member.request.JoinRequest;
@@ -62,5 +63,14 @@ public class MemberService {
         if(memberRepository.existsByMemberId(memberId)) {
             throw new AlreadyExistMemberIdException();
         }
+    }
+
+    public String findId(FindIdRequest request) {
+        String memberName = request.getMemberName();
+        String email = request.getEmail();
+
+        Member member = memberRepository.findByMemberNameAndEmail(memberName, email);
+
+        return member.getMemberId();
     }
 }
