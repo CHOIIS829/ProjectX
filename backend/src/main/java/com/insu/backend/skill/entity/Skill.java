@@ -1,6 +1,6 @@
 package com.insu.backend.skill.entity;
 
-import com.insu.backend.member.entity.MemberSkill;
+import com.insu.backend.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,6 +21,9 @@ public class Skill {
     private Long skillNo;
 
     private String skillName;
+
+    @ManyToMany(mappedBy = "skills")
+    private List<Member> members = new ArrayList<>();
 
     @Builder
     public Skill(String skillName) {

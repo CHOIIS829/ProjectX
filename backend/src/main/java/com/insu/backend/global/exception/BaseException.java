@@ -2,11 +2,12 @@ package com.insu.backend.global.exception;
 
 import lombok.Getter;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 @Getter
-public abstract class BaseException extends RuntimeException{
+public abstract class BaseException extends RuntimeException {
 
     public final Map<String, String> validation = new HashMap<>();
 
