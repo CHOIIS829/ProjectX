@@ -4,7 +4,6 @@ import com.insu.backend.global.jwt.filter.JWTFilter;
 import com.insu.backend.global.jwt.filter.JWTUtil;
 import com.insu.backend.global.jwt.filter.LoginFilter;
 import com.insu.backend.global.jwt.repository.RefreshRepository;
-import com.insu.backend.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,8 +17,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+
 
 @Configuration
 @EnableWebSecurity
@@ -51,11 +54,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));      // Bean 등록한 CORS 설정 추가
         http.csrf(AbstractHttpConfigurer::disable);
         http.formLogin(AbstractHttpConfigurer::disable);
         http.httpBasic(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests((auth) -> auth
-//                .requestMatchers("/", "/join", "/login", "/reissue", "/checkId").permitAll()
+//                .requestMatchers("/", "/join", "/login", "/reissue", "/checkId","/sendEmail").permitAll()
 //                .requestMatchers("/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
 //                .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                 .requestMatchers("/**").permitAll()
@@ -68,4 +72,19 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+    // CORS 설정 Bean 등록
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.addAllowedMethod("*");
+        configuration.addAllowedHeader("*");
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
 }

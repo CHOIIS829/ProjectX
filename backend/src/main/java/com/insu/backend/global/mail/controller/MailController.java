@@ -23,6 +23,7 @@ public class MailController {
 
     @PostMapping("/sendEmail")
     public ResponseEntity<SuccessResponse<Void>> emailCheck(String email) throws MessagingException {
+        log.info(email);
         mailService.sendMail(email);
 
         return ResponseEntity.ok(SuccessResponse.<Void>builder()

@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.executable.ValidateOnExecution;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class AuthController {
 
     private final MemberService memberService;
@@ -25,7 +27,7 @@ public class AuthController {
     @PostMapping("/join")
     public ResponseEntity<SuccessResponse<Void>> join(@RequestBody @Valid JoinRequest request) {
         memberService.join(request);
-
+        log.info(request.getMemberId());
         return ResponseEntity.ok(SuccessResponse.<Void>builder()
                 .code("200")
                 .message("회원가입 성공")
