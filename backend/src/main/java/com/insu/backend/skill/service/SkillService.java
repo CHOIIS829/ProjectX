@@ -33,7 +33,7 @@ public class SkillService {
         if(keyword == null) {
             return skillRepository.findAll().stream()
                     .map(SkillNameResponse::new)
-                    .collect(java.util.stream.Collectors.toList());
+                    .collect(Collectors.toList());
         } else {
             return skillRepository.findBySkillNameContaining(keyword).stream()
                     .map(SkillNameResponse::new)

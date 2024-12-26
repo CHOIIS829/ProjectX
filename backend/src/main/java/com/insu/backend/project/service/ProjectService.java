@@ -1,17 +1,21 @@
 package com.insu.backend.project.service;
 
 import com.insu.backend.global.exception.NotFoundMemberId;
+import com.insu.backend.global.exception.NotFoundPost;
 import com.insu.backend.member.entity.Member;
 import com.insu.backend.member.repository.MemberRepository;
 import com.insu.backend.project.entity.Project;
 import com.insu.backend.project.repository.ProjectRepository;
 import com.insu.backend.project.request.CreateProjectRequest;
+import com.insu.backend.project.response.ProjectOne;
 import com.insu.backend.skill.entity.Skill;
 import com.insu.backend.skill.repository.SkillRepository;
+import com.insu.backend.skill.response.SkillNameResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,5 +40,22 @@ public class ProjectService {
                 .build();
 
         projectRepository.save(project);
+    }
+
+    public ProjectOne getProject(Long projectId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(NotFoundPost::new);
+
+        ProjectOne projectOne = ProjectOne.builder()
+                .projectTitle(project.getProjectTitle())
+                .projectContent(project.getProjectContent())
+                .category(project.getCategory())
+                .memberId(project.getMember().getMemberId())
+                .skills(project.getSkills().stream()
+                        .map(SkillNameResponse::new)
+                        .collect(Collectors.toList()))
+                .build();
+
+        return projectOne;
     }
 }
