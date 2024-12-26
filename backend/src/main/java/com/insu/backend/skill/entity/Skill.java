@@ -22,8 +22,8 @@ public class Skill {
 
     private String skillName;
 
-    @ManyToMany(mappedBy = "skills")
-    private List<Member> members = new ArrayList<>();
+//    @ManyToMany(mappedBy = "skills")
+//    private List<Member> members = new ArrayList<>();
 
     @Builder
     public Skill(String skillName) {
