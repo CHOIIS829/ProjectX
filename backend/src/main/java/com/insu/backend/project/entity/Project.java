@@ -4,6 +4,7 @@ import com.insu.backend.global.BaseEntity;
 import com.insu.backend.member.entity.Member;
 import com.insu.backend.skill.entity.Skill;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -37,5 +38,12 @@ public class Project extends BaseEntity {
     @JoinColumn(name = "MEMBER_NO")
     private Member member;
 
-
+    @Builder
+    public Project(String projectTitle, String projectContent, String category, List<Skill> skills, Member member) {
+        this.projectTitle = projectTitle;
+        this.projectContent = projectContent;
+        this.category = category;
+        this.skills = skills;
+        this.member = member;
+    }
 }
