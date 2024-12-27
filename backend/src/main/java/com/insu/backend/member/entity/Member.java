@@ -30,6 +30,7 @@ public class Member extends BaseEntity {
     private String git;
     private String profileImg;
     private String role;
+    private String isProfileComplete;
 
     @ManyToMany
     @JoinTable(
@@ -43,7 +44,7 @@ public class Member extends BaseEntity {
     private List<Project> projects = new ArrayList<>();
 
     @Builder
-    public Member(String memberId, String memberPwd, String memberName, String email, /*String phone,*/ String git, String profileImg, String role, List<Skill> skills, List<Project> projects) {
+    public Member(String memberId, String memberPwd, String memberName, String email, /*String phone,*/ String git, String profileImg, String role, String isProfileComplete, List<Skill> skills, List<Project> projects) {
         this.memberId = memberId;
         this.memberPwd = memberPwd;
         this.memberName = memberName;
@@ -52,6 +53,7 @@ public class Member extends BaseEntity {
         this.git = git;
         this.profileImg = profileImg;
         this.role = role;
+        this.isProfileComplete = isProfileComplete;
         this.skills = skills;
         this.projects = projects;
     }

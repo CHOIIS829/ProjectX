@@ -59,6 +59,7 @@ public class MemberService {
                 .email(request.getEmail())
                 .git(request.getGit())
                 .role("ROLE_ADMIN")
+                .isProfileComplete("N")
                 .skills(skillS)
                 .build();
 
@@ -137,5 +138,12 @@ public class MemberService {
             throw new FailUploadFile();
         }
 
+    }
+
+    public String isProfileComplete(String memberId) {
+        Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(NotFoundMemberId::new);
+
+        return member.getIsProfileComplete();
     }
 }
