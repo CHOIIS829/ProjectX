@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ProjectRepositoryCustom {
 
-    List<Project> getList(ProejctSearch projectSearch);
+//    List<Project> getList(ProejctSearch projectSearch);
 }

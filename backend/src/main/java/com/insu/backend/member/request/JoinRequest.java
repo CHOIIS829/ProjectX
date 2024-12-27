@@ -19,4 +19,7 @@ public class JoinRequest {
     @NotBlank(message = "이름을 입력해주세요.")
     private String memberName;
 
+    @NotBlank(message = "이메일을 입력해주세요.")
+    private String email;
+
 }
