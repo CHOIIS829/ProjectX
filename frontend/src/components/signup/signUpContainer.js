@@ -1,16 +1,19 @@
 import { Logo } from "../../style/logo";
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { checkId, join } from "../../api/authApi";
 import { emailCheck,checkEmail } from "../../api/mailApi"; 
+import Modal from "../../util/modal";
+import { Policy } from "../../assets/policy";
+import { useNavigate } from "react-router-dom";
 
 const FormContainer = styled.form`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 35%;
-    gap: 35px;
+    width: 33%;
+    gap: 20px;
     padding: 50px 50px;
     border: 1px solid lightgrey;
     border-radius: 10px;
@@ -72,11 +75,16 @@ const FormContainers = styled.div`
     }
 `;
 
-const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-const gitProfileUrlRegex = /^https:\/\/github\.com\/[\w-]+$/;
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 
 export const SignUpContainer = () => {
+
+    const navigate = useNavigate(); 
+
+    // 정규식
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const gitProfileUrlRegex = /^https:\/\/github\.com\/[\w-]+$/;
 
     // 아이디
     const [id, setId] = useState("");
@@ -98,119 +106,195 @@ export const SignUpContainer = () => {
     const [passwordValidation, setPasswordValidation] = useState(false);
     const [passwordBlurred, setPasswordBlurred] = useState(false);
 
-    //비밀번호 확인
-    const [passwordCheck, setPasswordCheck] = useState("");
-    const [passwordCheckValidation, setPasswordCheckValidation] = useState(false);
-    const [passwordCheckBlurred, setPasswordCheckBlurred] = useState(false);
-
     //Git Profile URL
     const [gitProfileUrl, setGitProfileUrl] = useState("");
     const [gitProfileUrlValidation, setGitProfileUrlValidation] = useState(false);
     const [gitProfileUrlBlurred, setGitProfileUrlBlurred] = useState(false);
 
-    const handleIdCheck = async (e) => {
+    // 이름 임시용 나중에 테이불에 수정 필요
+    const [name, setName] = useState("");
+    const [nameValidation, setNameValidation] = useState(false);
+
+    // 모달
+    const [modal, setModal] = useState(false);
+    const [modalContent, setModalContent] = useState();   
+    const [confirm, setConfirm] = useState();
+    const [close, setClose] = useState();
+    const [confirmStatus, setConfirmStatus] = useState(false);
+    const [closeStatus , setCloseStatus] = useState(false);
+    
+
+    const routeHome = () => {
+        navigate("/");
+    }
+
+    const closeModal = () => {
+        setModal(false);
+    }
+
+    // 초기 로딩 시 모달창 띄우기 및 세팅
+    useEffect(() => {
+
+        setModalContent(<Policy/>);
+        setConfirmStatus(true);
+        setCloseStatus(true);
+        setConfirm(()=>closeModal);
+        setClose(()=>routeHome);
+        const timer = setTimeout(() => {
+            setModal(true); 
+        }, 30); 
+
+        return () => clearTimeout(timer);
+        
+    },[]);
+
+    // 유효성 검사 함수 
+    const validate = async(value, e) => {
 
         e.preventDefault();
 
-        if(!id) {
-            setIdValidation(false);
-            setIdValidationMessage("아이디를 입력하세요.");
-            return;
-        }
-
-        try {
-            const response = await checkId(id); 
-
-            if (response.status === 200) {
-                setIdValidation(true);
-                setIdValidationMessage("사용 가능한 아이디입니다.");
-            }
-        } catch (error) {
-            setIdValidation(false);
-            setIdValidationMessage("이미 사용중인 아이디입니다.");
-        }
-    };
-
-    const handleEmailCheck = async (e) => {
-
-        e.preventDefault();
-
-        if(!email) {
-            setEmailValidation(false);
-            setEmailValidationMessage("이메일을 입력하세요.");
-            return;
-        }
-
-        if(!emailRegex.test(email)) {
-            setEmailValidation(false);
-            setEmailValidationMessage("이메일 형식이 올바르지 않습니다.");
-            return;
-        }
-
-        try{
-            const response = await emailCheck(email);
-
-            if(response.status === 200) {
-                setEmailValidation(true);
-                setEmailValidationMessage("인증코드를 전송했습니다.");
-            }
-        }catch(error) {
-            setEmailValidation(false);
-            setEmailValidationMessage("이메일 전송에 실패했습니다.");
+        switch(value) {
+            case "id":
+                if(id === "" || id === null) {
+                    setIdValidation(false); 
+                    setIdValidationMessage("아이디를 입력하세요.");
+                    return;
+                }else{
+                    try{
+                        const response = await checkId(id);
+                        if(response.status === 200) {
+                            console.log(response);
+                            setIdValidation(true);
+                            setIdValidationMessage("사용 가능한 아이디입니다.");
+                        }
+                    }catch(error) {
+                        setIdValidation(false);
+                        setIdValidationMessage("이미 사용중인 아이디입니다.");
+                    }
+                }
+                break;
+            case "email":
+                if(email === "" || email === null) {
+                    setEmailValidation(false);
+                    setEmailValidationMessage("이메일을 입력하세요.");
+                    return;
+                }else{
+                    if(!emailRegex.test(email)) {
+                        setEmailValidation(false);
+                        setEmailValidationMessage("이메일 형식이 올바르지 않습니다.");
+                        return;
+                    }
+                    try{
+                        const response = await emailCheck(email);
+                        if(response.status === 200) {
+                            setEmailValidation(true);
+                            setEmailValidationMessage("인증코드를 전송했습니다.");
+                        }
+                    }catch(error) {
+                        setEmailValidation(false);
+                        setEmailValidationMessage("이메일 전송에 실패했습니다.");
+                    }
+                }
+                break;
+            case "emailCode":
+                if(emailCode === "" || emailCode === null) {
+                    setEmailCodeValidation(false);
+                    setEmailCodeValidationMessage("인증코드를 입력하세요.");
+                    return;
+                }else{
+                    if(!emailCode) {
+                        setEmailCodeValidation(false);
+                        setEmailCodeValidationMessage("인증코드를 입력하세요.");
+                        return;
+                    }
+                    try{
+                        const response = await checkEmail(email, emailCode);
+                        if(response.status === 200) {
+                            setEmailCodeValidation(true);
+                            setEmailCodeValidationMessage("인증코드가 일치합니다.");
+                        }
+                    }catch(error) {
+                        setEmailCodeValidation(false);
+                        setEmailCodeValidationMessage("인증코드가 일치하지 않습니다.");
+                    }
+                }
+                break;
+            case "password":
+                if(!passwordRegex.test(password)) {
+                    setPasswordBlurred(true);
+                    setPasswordValidation(false);
+                    return;
+                }
+                setPasswordBlurred(true);
+                setPasswordValidation(true);
+                break;
+            case "gitProfileUrl": 
+                if(!gitProfileUrlRegex.test(gitProfileUrl)) {
+                    setGitProfileUrlBlurred(true);
+                    setGitProfileUrlValidation(false);
+                    return;
+                }
+                setGitProfileUrlBlurred(true);
+                setGitProfileUrlValidation(true);
+                break;
+            case "name":
+                setName(e.target.value);
+                if(name !== "" || name !== null) {
+                    setNameValidation(true);
+                    return;
+                }
+                break;
+            
+            default:
+                break;
         }
     }
 
-    const handleEmailCodeCheck = async (e) => {
-        
+    // 회원가입 함수    
+    const joinMember = async(e) => {
+
         e.preventDefault();
 
-        if(!emailCode) {
-            setEmailCodeValidation(false);
-            setEmailCodeValidationMessage("인증코드를 입력하세요.");
+        if(!idValidation || !emailValidation || !emailCodeValidation || !passwordValidation || !gitProfileUrlValidation || !nameValidation) {
+            setModal(true);
+            setModalContent(<p>입력값을 확인해주세요.</p>);
+            setConfirmStatus(true);
+            setCloseStatus(false);
+            setConfirm(()=>closeModal);
             return;
+        }   
+
+        const member = {
+            memberId : id,
+            email : email,
+            memberPwd : password,
+            memberName : name,
+            gitProfileUrl : gitProfileUrl
         }
 
+        console.log(member);
         try{
-            const response = await checkEmail(email, emailCode);
-
+            const response = await join(member);
             if(response.status === 200) {
-                setEmailCodeValidation(true);
-                setEmailCodeValidationMessage("인증코드가 일치합니다.");
+                setModal(true);
+                setModalContent(<p>회원가입 성공.</p>);
+                setConfirmStatus(true);
+                setCloseStatus(false);
+                setConfirm(()=>routeHome);
             }
         }catch(error) {
-            setEmailCodeValidation(false);
-            setEmailCodeValidationMessage("인증코드가 일치하지 않습니다.");
+            setModal(true);
+            setModalContent(<p>서버 오류</p>);
+            setConfirmStatus(true);
+            setCloseStatus(false);
+            setConfirm(()=>closeModal); 
         }
-    } 
-
-    const handlePassword = (e) => {
-        const value = e.target.value;
-        setPassword(value);
-        setPasswordValidation(passwordRegex.test(value));
-    };
-
-    const handlePasswordChange = (e) => {
-        const value = e.target.value;
-        setPasswordCheck(value);
-        setPasswordCheckValidation(value === password);
-    };
-
-    const handleGitUrlChange = (e) => {
-        const value = e.target.value;
-        setGitProfileUrl(value);
-        setGitProfileUrlValidation(gitProfileUrlRegex.test(value));
-    };
-    
-    const handleBlur = (e, setBlurred) => {
-        setBlurred(true);
-    };
-
-    // 회원가입시 아이디, 비밀번호, 이메일, Git Profile URL을 전달 모달로 표시
+    }
 
     return (
+        <>
         <FormContainer>
             <Logo header="black" span="#F26F23" tag="h1" />
-            <br />
             <br />
 
             {/* 아이디 */}
@@ -220,8 +304,9 @@ export const SignUpContainer = () => {
                     placeholder="아이디를 입력하세요." 
                     onChange={(e) => setId(e.target.value)}
                     disabled={idValidation}
-                    />
-                <button onClick={handleIdCheck}>중복 확인</button>
+                    value={id}
+                />
+                <button onClick={(e)=>validate("id",e)}>중복 확인</button>
             </FormContainers>
             {idValidationMessage && (
                 <p style={{ color: idValidation ? 'green' : 'red' }}>{idValidationMessage}</p>
@@ -234,9 +319,10 @@ export const SignUpContainer = () => {
                     placeholder="이메일을 입력하세요."
                     onChange={(e) => setEmail(e.target.value)}
                     disabled={emailValidation}
+                    value={email}
                 />
-                <button onClick={handleEmailCheck}>이메일 인증</button>
-            </FormContainers>
+                <button onClick={(e)=>validate("email",e)}>이메일 인증</button>
+                </FormContainers>
             {emailValidationMessage && (
                 <p style={{ color: emailValidation ? 'green' : 'red' }}>{emailValidationMessage}</p>
             )}
@@ -248,8 +334,9 @@ export const SignUpContainer = () => {
                     placeholder="인증 코드를 입력하세요."
                     onChange={(e) => setEmailCode(e.target.value)}
                     disabled={emailCodeValidation}
+                    value={emailCode}
                 />
-                    <button onClick={handleEmailCodeCheck}>확인</button>
+                    <button onClick={(e)=>validate("emailCode",e)}>확인</button>
             </FormContainers>
             {emailCodeValidationMessage && (
                     <p style={{ color: emailCodeValidation ? 'green' : 'red' }}>{emailCodeValidationMessage}</p>
@@ -259,41 +346,46 @@ export const SignUpContainer = () => {
             <input 
                 type="password" 
                 placeholder="비밀번호를 입력하세요."
-                onChange={handlePassword}
-                onBlur={(e) => handleBlur(e, setPasswordBlurred)}
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+                onBlur={(e) => validate("password", e)}
             />
             {passwordBlurred && (
                 passwordValidation ? 
                 <p style={{ color: 'green' }}>올바른 비밀번호 입니다.</p> :
-                <p style={{ color: 'red' }}>올바르지 않은 비밀번호 입니다.</p>
-            )}
-
-            {/* 비밀번호 확인 */}
-            <input 
-                type="password" 
-                placeholder="비밀번호를 다시 입력하세요."
-                onChange={handlePasswordChange}
-                onBlur={(e) => handleBlur(e, setPasswordCheckBlurred)}
-            />
-            {passwordCheckBlurred && (
-                password === passwordCheck ? 
-                <p style={{ color: 'green' }}>비밀번호가 일치합니다.</p> :
-                <p style={{ color: 'red' }}>비밀번호가 일치하지 않습니다.</p>
+                <p style={{ color: 'red' }}>숫자, 영문자, 특수문자를 포함한 8~25자리로 입력해주세요</p>
             )}
         
             {/* Git Profile URL */} 
             <input
                 type="text"
                 placeholder="Git 주소를 입력하세요."
-                onChange={handleGitUrlChange}
-                onBlur={(e) => handleBlur(e, setGitProfileUrlBlurred)}
+                onChange={(e) => setGitProfileUrl(e.target.value)}
+                value={gitProfileUrl}
+                onBlur={(e) => validate("gitProfileUrl", e)}
             />
             {gitProfileUrlBlurred && (
                 gitProfileUrlValidation ? 
                 <p style={{ color: 'green' }}>올바른 Git 주소 입니다.</p> :
                 <p style={{ color: 'red' }}>올바르지 않은 Git 주소 입니다.</p>
             )}
-            <button>Sign Up</button>
+
+            <input
+                type="text"
+                placeholder="이름을 입력하세요."
+                onChange={(e) => validate("name", e)}
+                value={name}
+            />
+            <button onClick={joinMember}>Sign Up</button>
         </FormContainer>
+        <Modal 
+            open={modal} 
+            children={modalContent} 
+            confirmStatus={confirmStatus} 
+            closeStatus={closeStatus}
+            confirm={confirm}
+            close={close}
+        />
+        </>
     );
 };
