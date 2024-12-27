@@ -22,4 +22,6 @@ public class JoinRequest {
     @NotBlank(message = "이메일을 입력해주세요.")
     private String email;
 
+    private String gitProfileUrl;
+
 }

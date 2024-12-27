@@ -28,7 +28,7 @@ public class Member extends BaseEntity {
     private String memberName;
     private String email;
 //    private String phone;
-    private String git;
+    private String gitProfileUrl;
     private String profileImg;
     private String role;
     private String isProfileComplete;
@@ -45,13 +45,13 @@ public class Member extends BaseEntity {
     private List<Project> projects = new ArrayList<>();
 
     @Builder
-    public Member(String memberId, String memberPwd, String memberName, String email, /*String phone,*/ String git, String profileImg, String role, String isProfileComplete, List<Skill> skills, List<Project> projects) {
+    public Member(String memberId, String memberPwd, String memberName, String email, /*String phone,*/ String gitProfileUrl, String profileImg, String role, String isProfileComplete, List<Skill> skills, List<Project> projects) {
         this.memberId = memberId;
         this.memberPwd = memberPwd;
         this.memberName = memberName;
         this.email = email;
 //        this.phone = phone;
-        this.git = git;
+        this.gitProfileUrl = gitProfileUrl;
         this.profileImg = profileImg;
         this.role = role;
         this.isProfileComplete = isProfileComplete;
@@ -81,7 +81,7 @@ public class Member extends BaseEntity {
 
     // 프로필 수정
     public void updateProfile(UpdateProfileRequest request, List<Skill> skills) {
-        this.git = request.getGit();
+        this.gitProfileUrl = request.getGitProfileUrl();
         this.isProfileComplete = "Y";
         this.skills = skills;
     }

@@ -64,6 +64,8 @@ public class MemberService {
                         .memberId(request.getMemberId())
                         .memberPwd(encoder.encode(request.getMemberPwd()))
                         .memberName(request.getMemberName())
+                        .email(request.getEmail())
+                        .gitProfileUrl(request.getGitProfileUrl())
                         .role("ROLE_ADMIN")
                         .isProfileComplete("N")
                         .build();

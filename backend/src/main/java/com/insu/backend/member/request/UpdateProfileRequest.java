@@ -12,6 +12,6 @@ public class UpdateProfileRequest {
     private String memberId;
     private String memberPwd;
     private String email;
-    private String git;
+    private String gitProfileUrl;
     private List<String> skills;
 }
