@@ -58,6 +58,7 @@ const ModalContainer = styled.div`
         font-size: 15px;
         font-weight: bold;
         background-color: transparent;
+        color: black;
         cursor: pointer;
     }
 `;

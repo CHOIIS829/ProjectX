@@ -2,6 +2,7 @@ import { BrowserRouter,Routes, Route  } from "react-router-dom";
 import { Main } from "../pages/main"
 import { Login } from "../pages/login";
 import { SignUp } from "../pages/signUp";
+import { FindEmail } from "../pages/findEmail";
 import { Header } from "../components/common/Header";
 
 export const Router = () =>{
@@ -20,6 +21,9 @@ export const Router = () =>{
                 <Route path="/signUp" element={
                     <SignUp/>
                 }/>
+                <Route path="/find-email" element={
+                    <FindEmail/>
+                } />
             </Routes>
         </BrowserRouter>
     );

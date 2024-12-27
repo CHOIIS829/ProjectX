@@ -31,3 +31,10 @@ export const join = (member) => {
         '/join', member
     )
 }
+
+// 아이디 찾기
+export const findId = (member) => {
+    return instance.post(
+        '/findId', member
+    )
+}   
