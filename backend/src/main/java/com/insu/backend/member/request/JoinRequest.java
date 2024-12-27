@@ -19,12 +19,4 @@ public class JoinRequest {
     @NotBlank(message = "이름을 입력해주세요.")
     private String memberName;
 
-    private String email;
-
-    private String phone;
-
-    private String git;
-
-    private List<String> skills;
-
 }

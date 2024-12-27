@@ -2,6 +2,7 @@ package com.insu.backend.member.controller;
 
 import com.insu.backend.global.response.SuccessResponse;
 import com.insu.backend.member.request.InsertProfile;
+import com.insu.backend.member.request.UpdateProfileRequest;
 import com.insu.backend.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,23 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    @PostMapping("/isProfileComplete")
+    public ResponseEntity<SuccessResponse<Void>> isProfileComplete(String memberId) {
+        String isProfileComplete = memberService.isProfileComplete(memberId);
+
+        if (isProfileComplete.equals("N")) {
+            return ResponseEntity.ok(SuccessResponse.<Void>builder()
+                    .code("400")
+                    .message("프로필 미완성")
+                    .build());
+        }else {
+            return ResponseEntity.ok(SuccessResponse.<Void>builder()
+                    .code("200")
+                    .message("프로필 완성 여부 확인 성공")
+                    .build());
+        }
+    }
+
     @PostMapping("/profile")
     public ResponseEntity<SuccessResponse<String>> profile(@ModelAttribute InsertProfile request) {
         String url = memberService.insertProfile(request);
@@ -25,4 +43,15 @@ public class MemberController {
                 .data(url)
                 .build());
     }
+
+    @PatchMapping("/{memberId}")
+    public ResponseEntity<SuccessResponse<Void>> updateProfile(@RequestBody UpdateProfileRequest request) {
+        memberService.updateProfile(request);
+
+        return ResponseEntity.ok(SuccessResponse.<Void>builder()
+                .code("200")
+                .message("프로필 수정 성공")
+                .build());
+    }
+
 }
