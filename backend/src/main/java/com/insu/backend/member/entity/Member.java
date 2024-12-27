@@ -1,6 +1,7 @@
 package com.insu.backend.member.entity;
 
 import com.insu.backend.global.BaseEntity;
+import com.insu.backend.member.request.UpdateProfileRequest;
 import com.insu.backend.project.entity.Project;
 import com.insu.backend.skill.entity.Skill;
 import jakarta.persistence.*;
@@ -77,4 +78,12 @@ public class Member extends BaseEntity {
     public void changeProfileImg(String profileImg) {
         this.profileImg = profileImg;
     }
+
+    // 프로필 수정
+    public void updateProfile(UpdateProfileRequest request, List<Skill> skills) {
+        this.git = request.getGit();
+        this.isProfileComplete = "Y";
+        this.skills = skills;
+    }
+
 }

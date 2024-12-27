@@ -5,12 +5,9 @@ import com.insu.backend.global.mail.service.MailService;
 import com.insu.backend.global.util.RandomString8;
 import com.insu.backend.member.entity.Member;
 import com.insu.backend.member.repository.MemberRepository;
-import com.insu.backend.member.request.FIndPwRequest;
-import com.insu.backend.member.request.FindIdRequest;
-import com.insu.backend.member.request.InsertProfile;
+import com.insu.backend.member.request.*;
 import com.insu.backend.skill.entity.Skill;
 import com.insu.backend.skill.repository.SkillRepository;
-import com.insu.backend.member.request.JoinRequest;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -50,18 +47,26 @@ public class MemberService {
             throw new AlreadyExistMemberIdException();
         }
 
-        List<Skill> skillS = skillRepository.findBySkillNameIn(request.getSkills());
+//        List<Skill> skillS = skillRepository.findBySkillNameIn(request.getSkills());
+//
+//        Member member = Member.builder()
+//                .memberId(request.getMemberId())
+//                .memberPwd(encoder.encode(request.getMemberPwd()))
+//                .memberName(request.getMemberName())
+//                .email(request.getEmail())
+//                .git(request.getGit())
+//                .role("ROLE_ADMIN")
+//                .isProfileComplete("N")
+//                .skills(skillS)
+//                .build();
 
         Member member = Member.builder()
-                .memberId(request.getMemberId())
-                .memberPwd(encoder.encode(request.getMemberPwd()))
-                .memberName(request.getMemberName())
-                .email(request.getEmail())
-                .git(request.getGit())
-                .role("ROLE_ADMIN")
-                .isProfileComplete("N")
-                .skills(skillS)
-                .build();
+                        .memberId(request.getMemberId())
+                        .memberPwd(encoder.encode(request.getMemberPwd()))
+                        .memberName(request.getMemberName())
+                        .role("ROLE_ADMIN")
+                        .isProfileComplete("N")
+                        .build();
 
         memberRepository.save(member);
     }
@@ -145,5 +150,20 @@ public class MemberService {
                 .orElseThrow(NotFoundMemberId::new);
 
         return member.getIsProfileComplete();
+    }
+
+    @Transactional
+    public void updateProfile(UpdateProfileRequest request) {
+        Member member = memberRepository.findByMemberId(request.getMemberId())
+                .orElseThrow(NotFoundMemberId::new);
+
+        // 비밀번호 일치여부 확인
+        if(!encoder.matches(request.getMemberPwd(), member.getMemberPwd())) {
+            throw new InvalidPassword();
+        }
+
+        List<Skill> skillS = skillRepository.findBySkillNameIn(request.getSkills());
+
+        member.updateProfile(request, skillS);
     }
 }

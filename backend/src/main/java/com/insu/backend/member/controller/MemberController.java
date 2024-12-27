@@ -2,6 +2,7 @@ package com.insu.backend.member.controller;
 
 import com.insu.backend.global.response.SuccessResponse;
 import com.insu.backend.member.request.InsertProfile;
+import com.insu.backend.member.request.UpdateProfileRequest;
 import com.insu.backend.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -42,4 +43,15 @@ public class MemberController {
                 .data(url)
                 .build());
     }
+
+    @PatchMapping("/{memberId}")
+    public ResponseEntity<SuccessResponse<Void>> updateProfile(@RequestBody UpdateProfileRequest request) {
+        memberService.updateProfile(request);
+
+        return ResponseEntity.ok(SuccessResponse.<Void>builder()
+                .code("200")
+                .message("프로필 수정 성공")
+                .build());
+    }
+
 }
