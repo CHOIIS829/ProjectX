@@ -83,7 +83,8 @@ public class MemberService {
         String memberName = request.getMemberName();
         String email = request.getEmail();
 
-        Member member = memberRepository.findByMemberNameAndEmail(memberName, email);
+        Member member = memberRepository.findByMemberNameAndEmail(memberName, email)
+                .orElseThrow(NotFoundMemberId::new);
 
         return member.getMemberId();
     }
