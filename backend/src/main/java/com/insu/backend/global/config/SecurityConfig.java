@@ -32,6 +32,7 @@ public class SecurityConfig {
     private final JWTUtil jwtUtil;
     private final AuthenticationConfiguration authenticationConfiguration;
     private final RefreshRepository refreshRepository;
+    private final CorsConfigurationSource corsConfigurationSource;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
@@ -54,12 +55,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));      // Bean 등록한 CORS 설정 추가
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource));      // Bean 등록한 CORS 설정 추가
         http.csrf(AbstractHttpConfigurer::disable);
         http.formLogin(AbstractHttpConfigurer::disable);
         http.httpBasic(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests((auth) -> auth
-//                .requestMatchers("/", "/join", "/login", "/reissue", "/checkId","/sendEmail").permitAll()
+//                .requestMatchers("/", "/join", "/login", "/reissue", "/checkId", "/findId", "/findPw", /sendEmail", "/checkEmail").permitAll()
 //                .requestMatchers("/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
 //                .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                 .requestMatchers("/**").permitAll()
@@ -71,20 +72,6 @@ public class SecurityConfig {
         http.addFilterAt(new LoginFilter(jwtUtil, authenticationManager(authenticationConfiguration), refreshRepository), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
-    }
-
-    // CORS 설정 Bean 등록
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:3000");
-        configuration.addAllowedMethod("*");
-        configuration.addAllowedHeader("*");
-        configuration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
     }
 
 }
