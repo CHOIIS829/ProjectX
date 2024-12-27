@@ -7,34 +7,27 @@ export const checkId = (id) => {
     )
 }
 
-// 회원 가입 
-export const join = (id, password, name, email) => {
+// 이메일 인증 코드 전송
+export const sendEmail = (email) => {  
     return instance.post(
-        '/join'
-        , { 
-            memberId : id, 
-            memberPwd : password,
-            memberName : name,
-            email : email
+        `/sendEmail?email=${email}`
+    )
+}
+
+// 이메일 인증 코드 확인
+export const checkEmail = (email, code) => {
+    return instance.post(
+        '/checkEmail',
+        {
+            email : email,
+            code : code
         }
     )
 }
 
-// 아이디 찾기
-export const findId = async (email) => {
+// 회원가입
+export const join = (member) => {
     return instance.post(
-        '/findId'
-        , { email : email }
-    )
-}   
-
-// 비밀번호 찾기
-export const findPwd = async (id, email) => {    
-    return instance.post(
-        '/findPwd'
-        , { 
-            memberId : id, 
-            email : email 
-        }
+        '/join', member
     )
 }
