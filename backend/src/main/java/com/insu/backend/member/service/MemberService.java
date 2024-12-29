@@ -47,19 +47,6 @@ public class MemberService {
             throw new AlreadyExistMemberIdException();
         }
 
-//        List<Skill> skillS = skillRepository.findBySkillNameIn(request.getSkills());
-//
-//        Member member = Member.builder()
-//                .memberId(request.getMemberId())
-//                .memberPwd(encoder.encode(request.getMemberPwd()))
-//                .memberName(request.getMemberName())
-//                .email(request.getEmail())
-//                .git(request.getGit())
-//                .role("ROLE_ADMIN")
-//                .isProfileComplete("N")
-//                .skills(skillS)
-//                .build();
-
         Member member = Member.builder()
                         .memberId(request.getMemberId())
                         .memberPwd(encoder.encode(request.getMemberPwd()))
@@ -165,8 +152,8 @@ public class MemberService {
             throw new InvalidPassword();
         }
 
-        List<Skill> skillS = skillRepository.findBySkillNameIn(request.getSkills());
+        List<Skill> skills = skillRepository.findBySkillNameIn(request.getSkills());
 
-        member.updateProfile(request, skillS);
+        member.updateProfile(request, skills);
     }
 }

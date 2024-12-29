@@ -7,16 +7,20 @@ import com.insu.backend.member.repository.MemberRepository;
 import com.insu.backend.project.entity.Project;
 import com.insu.backend.project.repository.ProjectRepository;
 import com.insu.backend.project.request.CreateProjectRequest;
+import com.insu.backend.project.request.ProjectSearch;
 import com.insu.backend.project.response.ProjectOne;
 import com.insu.backend.skill.entity.Skill;
 import com.insu.backend.skill.repository.SkillRepository;
 import com.insu.backend.skill.response.SkillNameResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProjectService {
@@ -57,5 +61,9 @@ public class ProjectService {
                 .build();
 
         return projectOne;
+    }
+
+    public Page<Project> getList(ProjectSearch projectSearch) {
+        return projectRepository.getList(projectSearch);
     }
 }

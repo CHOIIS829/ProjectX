@@ -9,5 +9,5 @@ import java.util.List;
 @Setter
 public class InsertSkill {
 
-    private List<String> skillList;
+     private List<String> skills;
 }

@@ -81,6 +81,7 @@ public class Member extends BaseEntity {
 
     // 프로필 수정
     public void updateProfile(UpdateProfileRequest request, List<Skill> skills) {
+        this.email = request.getEmail();
         this.gitProfileUrl = request.getGitProfileUrl();
         this.isProfileComplete = "Y";
         this.skills = skills;
