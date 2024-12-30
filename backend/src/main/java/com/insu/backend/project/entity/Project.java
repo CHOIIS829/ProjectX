@@ -46,4 +46,11 @@ public class Project extends BaseEntity {
         this.skills = skills;
         this.member = member;
     }
+
+    public void editProject(String projectTitle, String projectContent, String category, List<Skill> skills) {
+        this.projectTitle = projectTitle;
+        this.projectContent = projectContent;
+        this.category = category;
+        this.skills = skills;
+    }
 }

@@ -49,4 +49,15 @@ public class ProjectController {
                 .data(projects)
                 .build());
     }
+
+    @PatchMapping("/edit/{projectId}")
+    public ResponseEntity<SuccessResponse<ProjectOne>> editProject(@PathVariable Long projectId, @RequestBody CreateProjectRequest request) {
+        ProjectOne projectOne = projectService.editProject(projectId, request);
+
+        return ResponseEntity.ok(SuccessResponse.<ProjectOne>builder()
+                .code("200")
+                .message("프로젝트 수정 성공")
+                .data(projectOne)
+                .build());
+    }
 }

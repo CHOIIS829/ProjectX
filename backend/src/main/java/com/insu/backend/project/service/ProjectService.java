@@ -14,6 +14,7 @@ import com.insu.backend.project.response.ProjectOne;
 import com.insu.backend.skill.entity.Skill;
 import com.insu.backend.skill.repository.SkillRepository;
 import com.insu.backend.skill.response.SkillNameResponse;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -56,6 +57,8 @@ public class ProjectService {
                 .projectContent(project.getProjectContent())
                 .category(project.getCategory())
                 .memberId(project.getMember().getMemberId())
+                .createAt(project.getCreateAt())
+                .updateAt(project.getUpdateAt())
                 .skills(project.getSkills().stream()
                         .map(SkillNameResponse::new)
                         .collect(Collectors.toList()))
@@ -66,5 +69,30 @@ public class ProjectService {
 
     public PageResponse<ProjectList> getList(ProjectSearch projectSearch) {
         return projectRepository.getList(projectSearch);
+    }
+
+    @Transactional
+    public ProjectOne editProject(Long projectId, CreateProjectRequest request) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(NotFoundPost::new);
+
+        Member member = memberRepository.findByMemberId(request.getMemberId())
+                .orElseThrow(NotFoundMemberId::new);
+
+        List<Skill> skillS = skillRepository.findBySkillNameIn(request.getSkills());
+
+        project.editProject(request.getProjectTitle(), request.getProjectContent(), request.getCategory(), skillS);
+
+        return ProjectOne.builder()
+                .projectTitle(project.getProjectTitle())
+                .projectContent(project.getProjectContent())
+                .category(project.getCategory())
+                .memberId(project.getMember().getMemberId())
+                .createAt(project.getCreateAt())
+                .updateAt(project.getUpdateAt())
+                .skills(project.getSkills().stream()
+                        .map(SkillNameResponse::new)
+                        .collect(Collectors.toList()))
+                .build();
     }
 }
