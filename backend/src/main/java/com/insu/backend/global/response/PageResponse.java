@@ -1,6 +1,5 @@
 package com.insu.backend.global.response;
 
-import com.insu.backend.project.response.ProjectList;
 import lombok.*;
 
 import java.util.List;

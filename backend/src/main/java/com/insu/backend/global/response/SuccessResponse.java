@@ -3,10 +3,6 @@ package com.insu.backend.global.response;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
 @Getter
 public class SuccessResponse<T> {
 

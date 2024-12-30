@@ -7,13 +7,13 @@ import com.insu.backend.member.request.JoinRequest;
 import com.insu.backend.member.service.MemberService;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
-import jakarta.validation.executable.ValidateOnExecution;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 

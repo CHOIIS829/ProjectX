@@ -1,16 +1,12 @@
 package com.insu.backend.project.repository;
 
 import com.insu.backend.global.response.PageResponse;
-import com.insu.backend.project.entity.Project;
 import com.insu.backend.project.request.ProjectSearch;
 import com.insu.backend.project.response.ProjectList;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.util.StringUtils;
 
 import java.util.List;

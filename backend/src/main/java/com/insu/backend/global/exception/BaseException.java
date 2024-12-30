@@ -2,7 +2,6 @@ package com.insu.backend.global.exception;
 
 import lombok.Getter;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 

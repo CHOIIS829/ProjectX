@@ -1,6 +1,5 @@
 package com.insu.backend.global.jwt.service;
 
-import com.fasterxml.classmate.MemberResolver;
 import com.insu.backend.global.jwt.dto.CustomUserDetails;
 import com.insu.backend.member.entity.Member;
 import com.insu.backend.member.repository.MemberRepository;
