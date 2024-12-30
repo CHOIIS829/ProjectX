@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { FindEmailContainer } from "../components/findEmail/findEmailContainer";
+import { FindPwdContainer } from "../components/findPwd/findPwdContainer";  
 
 const Container = styled.div`
     display: flex;
@@ -9,10 +9,10 @@ const Container = styled.div`
     width: 100%;
 `;
 
-export const FindEmail = ()=> {
+export const FindPwd = ()=> {
     return(
         <Container>
-            <FindEmailContainer/>
+            <FindPwdContainer/>
         </Container>
-    );
-}
+    );  
+};

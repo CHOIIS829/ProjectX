@@ -43,8 +43,9 @@ public class AuthController {
                 .build());
     }
 
-    @GetMapping("/testing")
-    public void testing(){
+    // test 계정 생성 API
+    @GetMapping("/create")
+    public ResponseEntity<SuccessResponse<Void>> createTestAccount(){
         JoinRequest joinRequest = new JoinRequest();
             joinRequest.setMemberId("test01");
             joinRequest.setEmail("test01@gmail.com");
@@ -52,12 +53,16 @@ public class AuthController {
             joinRequest.setMemberPwd("1234");
             joinRequest.setGitProfileUrl("test01ggg");
             memberService.join(joinRequest);
+
+            return ResponseEntity.ok(SuccessResponse.<Void>builder()
+                    .code("200")
+                    .message("test account created")
+                    .build());
     }
 
     @PostMapping("/findId")
     public ResponseEntity<SuccessResponse<Map<String, String>>> findId(@RequestBody @Valid FindIdRequest request) {
-        log.info(request.getMemberName());
-        log.info(request.getEmail());
+
         String memberId = memberService.findId(request);
 
         return ResponseEntity.ok(SuccessResponse.<Map<String, String>>builder()

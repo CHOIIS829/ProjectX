@@ -38,3 +38,10 @@ export const findId = (member) => {
         '/findId', member
     )
 }   
+
+// 비밀번호 찾기
+export const findPwd = (member) => {
+    return instance.post(
+        '/findPw', member
+    )
+}

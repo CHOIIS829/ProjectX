@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { Logo } from "../../style/logo";
-import { filterRoutes } from "../../assets/routeData";
-import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { filterRoutes } from "../../assets/routeData";
 import Modal from "../../util/modal";
-import { findId } from "../../api/authApi";
+import React from "react";
+import { findPwd } from "../../api/authApi";
 
 const FormContainer = styled.form`
     display: flex;
@@ -55,9 +55,9 @@ const ControlContainer = styled.div`
     }
 `;
 
-export const FindEmailContainer = () => {
+export const FindPwdContainer = () => {
 
-    const navigate = useNavigate();
+    const navigate = useNavigate(); 
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState(''); 
@@ -70,8 +70,9 @@ export const FindEmailContainer = () => {
     const [confirmStatus, setConfirmStatus] = useState(false);
     const [closeStatus , setCloseStatus] = useState(false);
 
+    
     const makeRoutes = () => {
-        const filteredRoutes = filterRoutes('/signup', '/login','/find-password');
+        const filteredRoutes = filterRoutes('/signup', '/login','/find-id');
         return filteredRoutes.map((route, index) => {
             return (
                 <React.Fragment key={route.path}>
@@ -82,11 +83,16 @@ export const FindEmailContainer = () => {
         });
     };
 
+    
     const closeModal = () => {
         setModal(false);
     }
 
-    const handleFindId = async (e) => {
+    const goToLogin = () => {
+        navigate('/login');
+    }
+
+    const handleFindPwd = async(e) => {
 
         e.preventDefault();
 
@@ -99,16 +105,37 @@ export const FindEmailContainer = () => {
             return;
         }
 
-        const data = {
-            memberName: name,
-            email: email
-        };
+        if(!email.includes('@')){
+            setModalContent('이메일 형식이 올바르지 않습니다.');
+            setConfirmStatus(true);
+            setCloseStatus(false);
+            setConfirm(()=>closeModal);
+            setModal(true);
+            return;
+        }
+        
+        try{
+            const data = {
+                memberId : name,
+                email: email
+            };
 
-        const response = await findId(data);
-        console.log(response);
-
-
-    };
+            const response = await findPwd(data);
+            if(response.status === 200){
+                setModalContent("이메일을 전송했습니다.");
+                setConfirmStatus(true);
+                setCloseStatus(false);
+                setConfirm(()=>closeModal);
+                setModal(true);
+            }
+        }catch(e){
+            setModalContent('이름과 이메일을 확인해주세요.');
+            setConfirmStatus(true);
+            setCloseStatus(false);
+            setConfirm(()=>closeModal);
+            setModal(true);
+        }
+    }
 
     return(
         <FormContainer>
@@ -128,7 +155,7 @@ export const FindEmailContainer = () => {
             <ControlContainer>
                 {makeRoutes()}
             </ControlContainer>
-            <button onClick={(e)=>handleFindId(e)}>이메일 찾기</button>
+            <button onClick={(e)=>handleFindPwd(e)}>비밀번호 찾기</button>
             <Modal 
                 open={modal} 
                 children={modalContent} 
@@ -138,5 +165,5 @@ export const FindEmailContainer = () => {
                 close={close}
             />
         </FormContainer>
-    );
-}
+    );  
+};

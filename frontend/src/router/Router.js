@@ -2,8 +2,9 @@ import { BrowserRouter,Routes, Route  } from "react-router-dom";
 import { Main } from "../pages/main"
 import { Login } from "../pages/login";
 import { SignUp } from "../pages/signUp";
-import { FindEmail } from "../pages/findEmail";
+import { FindId } from "../pages/findId";
 import { Header } from "../components/common/Header";
+import { FindPwd } from "../pages/findPwd";
 
 export const Router = () =>{
     return(
@@ -21,8 +22,11 @@ export const Router = () =>{
                 <Route path="/signUp" element={
                     <SignUp/>
                 }/>
-                <Route path="/find-email" element={
-                    <FindEmail/>
+                <Route path="/find-id" element={
+                    <FindId/>
+                } />
+                <Route path="/find-password" element={
+                    <FindPwd/>
                 } />
             </Routes>
         </BrowserRouter>

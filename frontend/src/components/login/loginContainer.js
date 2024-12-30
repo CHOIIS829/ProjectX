@@ -57,7 +57,7 @@ export const LoginContainer = () => {
     const navigate = useNavigate();
 
     const makeRoutes = () => {
-        const filteredRoutes = filterRoutes('/find-email', '/signup', '/find-password');
+        const filteredRoutes = filterRoutes('/find-id', '/signup', '/find-password');
         return filteredRoutes.map((route, index) => {
             return (
                 <React.Fragment key={route.path}>

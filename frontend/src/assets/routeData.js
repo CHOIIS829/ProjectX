@@ -14,10 +14,10 @@ export const RouteData = {
         titleKorean: "회원가입",
         path: "/signup"
     },
-    findEmail: {
-        titleEnglish: "Find Email",
-        titleKorean: "이메일 찾기",
-        path: "/find-email"
+    findId: {
+        titleEnglish: "Find Id",
+        titleKorean: "아이디 찾기",
+        path: "/find-id"
     },
     findPassword: {
         titleEnglish: "Find Password",
