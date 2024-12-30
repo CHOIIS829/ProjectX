@@ -1,11 +1,15 @@
 package com.insu.backend.project.controller;
 
+import com.insu.backend.global.response.PageResponse;
 import com.insu.backend.global.response.SuccessResponse;
 import com.insu.backend.project.entity.Project;
 import com.insu.backend.project.request.CreateProjectRequest;
+import com.insu.backend.project.request.ProjectSearch;
+import com.insu.backend.project.response.ProjectList;
 import com.insu.backend.project.response.ProjectOne;
 import com.insu.backend.project.service.ProjectService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +38,17 @@ public class ProjectController {
                 .code("200")
                 .message("프로젝트 조회 성공")
                 .data(projectOne)
+                .build());
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<SuccessResponse<PageResponse<ProjectList>>> getList(@RequestBody ProjectSearch projectSearch) {
+        PageResponse<ProjectList> projects = projectService.getList(projectSearch);
+
+        return ResponseEntity.ok(SuccessResponse.<PageResponse<ProjectList>>builder()
+                .code("200")
+                .message("프로젝트 목록 조회 성공")
+                .data(projects)
                 .build());
     }
 }

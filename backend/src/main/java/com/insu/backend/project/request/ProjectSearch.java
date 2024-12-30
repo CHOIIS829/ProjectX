@@ -7,11 +7,10 @@ import lombok.Setter;
 @Setter
 public class ProjectSearch {
 
-    private Integer page;
-    private Integer size;
+    private Integer page = 1;
+    private Integer size = 10;
 
-    private String category;
+    private String category = "all";
     private String keyword;
-
 
 }

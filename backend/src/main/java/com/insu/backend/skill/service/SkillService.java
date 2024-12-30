@@ -18,7 +18,7 @@ public class SkillService {
 
     public void insert(InsertSkill skillList) {
 
-        skillList.getSkillList().forEach(skillName -> {
+        skillList.getSkills().forEach(skillName -> {
 
             Skill skill = Skill.builder()
                             .skillName(skillName)

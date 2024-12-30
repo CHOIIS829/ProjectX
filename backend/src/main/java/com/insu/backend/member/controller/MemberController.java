@@ -33,7 +33,7 @@ public class MemberController {
         }
     }
 
-    @PostMapping("/profile")
+    @PostMapping("/profileImg")
     public ResponseEntity<SuccessResponse<String>> profile(@ModelAttribute InsertProfile request) {
         String url = memberService.insertProfile(request);
 
@@ -44,7 +44,7 @@ public class MemberController {
                 .build());
     }
 
-    @PatchMapping("/{memberId}")
+    @PatchMapping("/profile")
     public ResponseEntity<SuccessResponse<Void>> updateProfile(@RequestBody UpdateProfileRequest request) {
         memberService.updateProfile(request);
 
