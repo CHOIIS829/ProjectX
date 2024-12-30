@@ -1,9 +1,11 @@
 package com.insu.backend.project.controller;
 
+import com.insu.backend.global.response.PageResponse;
 import com.insu.backend.global.response.SuccessResponse;
 import com.insu.backend.project.entity.Project;
 import com.insu.backend.project.request.CreateProjectRequest;
 import com.insu.backend.project.request.ProjectSearch;
+import com.insu.backend.project.response.ProjectList;
 import com.insu.backend.project.response.ProjectOne;
 import com.insu.backend.project.service.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -40,10 +42,10 @@ public class ProjectController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<SuccessResponse<Page<Project>>> getList(@RequestBody ProjectSearch projectSearch) {
-        Page<Project> projects = projectService.getList(projectSearch);
+    public ResponseEntity<SuccessResponse<PageResponse<ProjectList>>> getList(@RequestBody ProjectSearch projectSearch) {
+        PageResponse<ProjectList> projects = projectService.getList(projectSearch);
 
-        return ResponseEntity.ok(SuccessResponse.<Page<Project>>builder()
+        return ResponseEntity.ok(SuccessResponse.<PageResponse<ProjectList>>builder()
                 .code("200")
                 .message("프로젝트 목록 조회 성공")
                 .data(projects)

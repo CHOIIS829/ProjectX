@@ -41,7 +41,7 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom{
                 .from(project)
                 .where(
                         categoryEq(projectSearch.getCategory()),
-                        keywordContains(projectSearch.getKeyword())
+                        keywordLike(projectSearch.getKeyword())
                 )
                 .orderBy(project.projectNo.desc())
                 .offset(offset)
@@ -53,28 +53,21 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom{
                 .from(project)
                 .where(
                         categoryEq(projectSearch.getCategory()),
-                        keywordContains(projectSearch.getKeyword())
+                        keywordLike(projectSearch.getKeyword())
                 )
                 .fetchOne();
 
         int totalPages = (int) Math.ceil((double) totalCount / size);
         boolean last = projectSearch.getPage() == totalPages;
 
-        return PageResponse.builder()
-                .content(projects)
-                .page(projectSearch.getPage())
-                .size(size)
-                .totalElements(totalCount)
-                .totalPages(totalPages)
-                .last(last)
-                .build();
+        return new PageResponse<ProjectList>(projects, projectSearch.getPage(), size, totalCount, totalPages, last);
     }
 
     private BooleanExpression categoryEq(String category) {
         return "all".equals(category) ? null : project.category.eq(category);
     }
 
-    private BooleanExpression keywordContains(String keyword) {
-        return StringUtils.hasText(keyword) ? project.projectTitle.contains(keyword) : null;
+    private BooleanExpression keywordLike(String keyword) {
+        return StringUtils.hasText(keyword) ? project.projectTitle.likeIgnoreCase("%" + keyword + "%") : null;
     }
 }
