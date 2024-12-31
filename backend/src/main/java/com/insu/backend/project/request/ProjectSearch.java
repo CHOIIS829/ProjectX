@@ -12,5 +12,6 @@ public class ProjectSearch {
 
     private String category = "all";
     private String keyword;
+    private String memberId;
 
 }

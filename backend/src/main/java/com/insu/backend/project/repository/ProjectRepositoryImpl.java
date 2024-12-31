@@ -37,7 +37,8 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom{
                 .from(project)
                 .where(
                         categoryEq(projectSearch.getCategory()),
-                        keywordLike(projectSearch.getKeyword())
+                        keywordLike(projectSearch.getKeyword()),
+                        memberEq(projectSearch.getMemberId())
                 )
                 .orderBy(project.projectNo.desc())
                 .offset(offset)
@@ -65,5 +66,9 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom{
 
     private BooleanExpression keywordLike(String keyword) {
         return StringUtils.hasText(keyword) ? project.projectTitle.likeIgnoreCase("%" + keyword + "%") : null;
+    }
+
+    private BooleanExpression memberEq(String memberId) {
+        return StringUtils.hasText(memberId) ? project.member.memberId.eq(memberId) : null;
     }
 }

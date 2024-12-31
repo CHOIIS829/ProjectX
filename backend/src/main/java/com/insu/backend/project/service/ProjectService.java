@@ -45,6 +45,8 @@ public class ProjectService {
                 .member(member)
                 .build();
 
+        member.addProject(project);
+
         projectRepository.save(project);
     }
 
