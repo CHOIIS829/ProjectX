@@ -19,6 +19,6 @@ public class ProjectOne {
     private String memberId;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
-    private List<SkillNameResponse> skills;
+    private List<String> skills;
 
 }
