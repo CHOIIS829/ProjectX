@@ -34,4 +34,10 @@ public class SkillController {
                 .build());
     }
 
+    @DeleteMapping("/delete/{skillNo}")
+    public ResponseEntity<String> delete(@PathVariable Long skillNo) {
+        skillService.delete(skillNo);
+        return ResponseEntity.status(204).body("삭제 성공");
+    }
+
 }

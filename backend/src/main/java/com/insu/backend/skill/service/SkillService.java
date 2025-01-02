@@ -40,4 +40,8 @@ public class SkillService {
                     .collect(Collectors.toList());
         }
     }
+
+    public void delete(Long skillNo) {
+        skillRepository.deleteById(skillNo);
+    }
 }
