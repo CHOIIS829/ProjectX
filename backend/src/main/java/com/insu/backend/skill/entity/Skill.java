@@ -1,12 +1,14 @@
 package com.insu.backend.skill.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.insu.backend.member.entity.Member;
+import com.insu.backend.project.entity.Project;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -21,8 +23,11 @@ public class Skill {
 
     private String skillName;
 
-//    @ManyToMany(mappedBy = "skills")
-//    private List<Member> members = new ArrayList<>();
+    @ManyToMany(mappedBy = "skills", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<Member> members = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "skills", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<Project> projects = new ArrayList<>();
 
     @Builder
     public Skill(String skillName) {

@@ -26,7 +26,7 @@ public class Project extends BaseEntity {
     private String projectContent;
     private String category; // 구인 or 구직
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "PROJECT_SKILL", // 중간 테이블
             joinColumns = @JoinColumn(name = "PROJECT_NO"), // 현재 엔티티의 외래키

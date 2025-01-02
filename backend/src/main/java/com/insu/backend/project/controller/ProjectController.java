@@ -28,9 +28,9 @@ public class ProjectController {
                 .build());
     }
 
-    @GetMapping("/get/{projectId}")
-    public ResponseEntity<SuccessResponse<ProjectOne>> getProject(@PathVariable Long projectId) {
-        ProjectOne projectOne = projectService.getProject(projectId);
+    @GetMapping("/get/{projectNo}")
+    public ResponseEntity<SuccessResponse<ProjectOne>> getProject(@PathVariable Long projectNo) {
+        ProjectOne projectOne = projectService.getProject(projectNo);
 
         return ResponseEntity.ok(SuccessResponse.<ProjectOne>builder()
                 .code("200")

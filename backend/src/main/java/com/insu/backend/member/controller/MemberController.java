@@ -53,4 +53,14 @@ public class MemberController {
                 .build());
     }
 
+    @PostMapping("/deleteMember")
+    public ResponseEntity<SuccessResponse<Void>> deleteMember(String memberId) {
+        memberService.deleteMember(memberId);
+
+        return ResponseEntity.ok(SuccessResponse.<Void>builder()
+                .code("200")
+                .message("회원 탈퇴 성공")
+                .build());
+    }
+
 }

@@ -156,4 +156,12 @@ public class MemberService {
 
         member.updateProfile(request, skills);
     }
+
+    @Transactional
+    public void deleteMember(String memberId) {
+        Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(NotFoundMemberId::new);
+
+        member.deleteMember();
+    }
 }

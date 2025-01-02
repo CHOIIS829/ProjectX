@@ -48,13 +48,13 @@ public class ProjectService {
         projectRepository.save(project);
     }
 
-    public ProjectOne getProject(Long projectId) {
-        Project project = projectRepository.findById(projectId)
+    public ProjectOne getProject(Long projectNo) {
+        Project project = projectRepository.findById(projectNo)
                 .orElseThrow(NotFoundPost::new);
 
         List<Skill> skills = project.getSkills();
 
-        ProjectOne projectOne = ProjectOne.builder()
+        return ProjectOne.builder()
                 .projectTitle(project.getProjectTitle())
                 .projectContent(project.getProjectContent())
                 .category(project.getCategory())
@@ -65,8 +65,6 @@ public class ProjectService {
                         .map(Skill::getSkillName)
                         .toList())
                 .build();
-
-        return projectOne;
     }
 
     public PageResponse<ProjectList> getList(ProjectSearch projectSearch) {
