@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class InsertProfile {
 
     private String memberId;
+
     private MultipartFile file;
 
 }

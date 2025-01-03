@@ -7,6 +7,7 @@ import com.insu.backend.project.request.ProjectSearch;
 import com.insu.backend.project.response.ProjectList;
 import com.insu.backend.project.response.ProjectOne;
 import com.insu.backend.project.service.ProjectService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class ProjectController {
     private final ProjectService projectService;
 
     @PostMapping("/create")
-    public ResponseEntity<SuccessResponse<Void>> createProject(@RequestBody CreateProjectRequest request) {
+    public ResponseEntity<SuccessResponse<Void>> createProject(@RequestBody @Valid CreateProjectRequest request) {
         projectService.createProject(request);
 
         return ResponseEntity.ok(SuccessResponse.<Void>builder()
@@ -51,7 +52,7 @@ public class ProjectController {
     }
 
     @PatchMapping("/edit/{projectId}")
-    public ResponseEntity<SuccessResponse<ProjectOne>> editProject(@PathVariable Long projectId, @RequestBody CreateProjectRequest request) {
+    public ResponseEntity<SuccessResponse<ProjectOne>> editProject(@PathVariable Long projectId, @RequestBody @Valid CreateProjectRequest request) {
         ProjectOne projectOne = projectService.editProject(projectId, request);
 
         return ResponseEntity.ok(SuccessResponse.<ProjectOne>builder()

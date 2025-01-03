@@ -4,6 +4,7 @@ import com.insu.backend.global.response.SuccessResponse;
 import com.insu.backend.skill.request.InsertSkill;
 import com.insu.backend.skill.response.SkillNameResponse;
 import com.insu.backend.skill.service.SkillService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class SkillController {
     private final SkillService skillService;
 
     @PostMapping("/insert")
-    public ResponseEntity<String> insert(@RequestBody InsertSkill skillList) {
+    public ResponseEntity<String> insert(@RequestBody @Valid InsertSkill skillList) {
         skillService.insert(skillList);
         return ResponseEntity.status(201).body("등록 성공");
     }

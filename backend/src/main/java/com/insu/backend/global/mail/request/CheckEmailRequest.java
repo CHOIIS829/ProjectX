@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CheckEmailRequest {
+
     private String email;
 
     @NotBlank(message = "인증번호를 입력해주세요.")

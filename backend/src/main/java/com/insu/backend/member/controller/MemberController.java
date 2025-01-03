@@ -4,6 +4,7 @@ import com.insu.backend.global.response.SuccessResponse;
 import com.insu.backend.member.request.InsertProfile;
 import com.insu.backend.member.request.UpdateProfileRequest;
 import com.insu.backend.member.service.MemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +45,7 @@ public class MemberController {
     }
 
     @PatchMapping("/profile")
-    public ResponseEntity<SuccessResponse<Void>> updateProfile(@RequestBody UpdateProfileRequest request) {
+    public ResponseEntity<SuccessResponse<Void>> updateProfile(@RequestBody @Valid UpdateProfileRequest request) {
         memberService.updateProfile(request);
 
         return ResponseEntity.ok(SuccessResponse.<Void>builder()

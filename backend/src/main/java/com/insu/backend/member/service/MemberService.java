@@ -144,6 +144,7 @@ public class MemberService {
 
     @Transactional
     public void updateProfile(UpdateProfileRequest request) {
+
         Member member = memberRepository.findByMemberId(request.getMemberId())
                 .orElseThrow(NotFoundMemberId::new);
 
