@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -39,6 +40,8 @@ public class ProjectService {
                 .projectTitle(request.getProjectTitle())
                 .projectContent(request.getProjectContent())
                 .category(request.getCategory())
+                .isClosed("N")
+                .isDeleted("N")
                 .skills(skillS)
                 .member(member)
                 .build();
@@ -48,13 +51,19 @@ public class ProjectService {
         projectRepository.save(project);
     }
 
-    public ProjectOne getProject(Long projectNo) {
+    public Optional<ProjectOne> getProject(Long projectNo) {
         Project project = projectRepository.findById(projectNo)
                 .orElseThrow(NotFoundPost::new);
 
         List<Skill> skills = project.getSkills();
 
-        return ProjectOne.builder()
+        if(project.getIsDeleted().equals("Y")) {
+            return Optional.of(ProjectOne.builder()
+                    .projectTitle("삭제된 프로젝트입니다.")
+                    .build());
+        }
+
+        return Optional.of(ProjectOne.builder()
                 .projectTitle(project.getProjectTitle())
                 .projectContent(project.getProjectContent())
                 .category(project.getCategory())
@@ -64,7 +73,7 @@ public class ProjectService {
                 .skills(skills.stream()
                         .map(Skill::getSkillName)
                         .toList())
-                .build();
+                .build());
     }
 
     public PageResponse<ProjectList> getList(ProjectSearch projectSearch) {
@@ -94,5 +103,12 @@ public class ProjectService {
                         .map(Skill::getSkillName)
                         .toList())
                 .build();
+    }
+
+    public void deleteProject(Long projectNo) {
+        Project project = projectRepository.findById(projectNo)
+                .orElseThrow(NotFoundPost::new);
+
+        project.deleteProject();
     }
 }

@@ -38,7 +38,9 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom{
                 .where(
                         categoryEq(projectSearch.getCategory()),
                         keywordLike(projectSearch.getKeyword()),
-                        memberEq(projectSearch.getMemberId())
+                        memberEq(projectSearch.getMemberId()),
+                        isClosedEq(projectSearch.getIsClosed()),
+                        project.isClosed.eq("N")
                 )
                 .orderBy(project.projectNo.desc())
                 .offset(offset)
@@ -50,7 +52,9 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom{
                 .from(project)
                 .where(
                         categoryEq(projectSearch.getCategory()),
-                        keywordLike(projectSearch.getKeyword())
+                        keywordLike(projectSearch.getKeyword()),
+                        memberEq(projectSearch.getMemberId()),
+                        isClosedEq(projectSearch.getIsClosed())
                 )
                 .fetchOne();
 
@@ -70,5 +74,9 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom{
 
     private BooleanExpression memberEq(String memberId) {
         return StringUtils.hasText(memberId) ? project.member.memberId.eq(memberId) : null;
+    }
+
+    private BooleanExpression isClosedEq(String isClosed) {
+        return "all".equals(isClosed) ? null : project.isClosed.eq(isClosed);
     }
 }

@@ -11,6 +11,7 @@ public class ProjectSearch {
     private Integer size = 10;
 
     private String category = "all";
+    private String isClosed = "all";
     private String keyword;
     private String memberId;
 

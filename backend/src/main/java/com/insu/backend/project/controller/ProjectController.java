@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/project")
 @RequiredArgsConstructor
@@ -30,13 +32,13 @@ public class ProjectController {
     }
 
     @GetMapping("/get/{projectNo}")
-    public ResponseEntity<SuccessResponse<ProjectOne>> getProject(@PathVariable Long projectNo) {
-        ProjectOne projectOne = projectService.getProject(projectNo);
+    public ResponseEntity<SuccessResponse<Optional<ProjectOne>>> getProject(@PathVariable Long projectNo) {
+        Optional<ProjectOne> optionalProject = projectService.getProject(projectNo);
 
-        return ResponseEntity.ok(SuccessResponse.<ProjectOne>builder()
+        return ResponseEntity.ok(SuccessResponse.<Optional<ProjectOne>>builder()
                 .code("200")
                 .message("프로젝트 조회 성공")
-                .data(projectOne)
+                .data(optionalProject)
                 .build());
     }
 
@@ -59,6 +61,16 @@ public class ProjectController {
                 .code("200")
                 .message("프로젝트 수정 성공")
                 .data(projectOne)
+                .build());
+    }
+
+    @PostMapping("/delete/{projectNo}")
+    public ResponseEntity<SuccessResponse<Void>> deleteProject(@PathVariable Long projectNo) {
+        projectService.deleteProject(projectNo);
+
+        return ResponseEntity.ok(SuccessResponse.<Void>builder()
+                .code("200")
+                .message("프로젝트 삭제 성공")
                 .build());
     }
 }
