@@ -19,7 +19,6 @@ public class CreateProjectRequest {
     @NotBlank(message = "카테고리를 입력해주세요.")
     private String category;
 
-    @NotBlank(message = "스킬을 입력해주세요.")
     private List<String> skills;
 
     @NotBlank(message = "회원아이디는 필수입니다.")
