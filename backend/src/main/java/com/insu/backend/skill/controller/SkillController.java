@@ -19,7 +19,7 @@ public class SkillController {
     private final SkillService skillService;
 
     @PostMapping("/insert")
-    public ResponseEntity<String> insert(@RequestBody @Valid InsertSkill skillList) {
+    public ResponseEntity<String> insert(@RequestBody InsertSkill skillList) {
         skillService.insert(skillList);
         return ResponseEntity.status(201).body("등록 성공");
     }
