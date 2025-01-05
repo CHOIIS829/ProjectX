@@ -4,7 +4,6 @@ import { createContext } from 'react';
 const MemberContext = createContext({
     member :{
         memberId: "",
-        memberPwd: "",
         memberName: "",
         email: "",
     },
