@@ -105,10 +105,19 @@ public class ProjectService {
                 .build();
     }
 
+    @Transactional
     public void deleteProject(Long projectNo) {
         Project project = projectRepository.findById(projectNo)
                 .orElseThrow(NotFoundPost::new);
 
         project.deleteProject();
+    }
+
+    @Transactional
+    public void closeProject(Long projectNo) {
+        Project project = projectRepository.findById(projectNo)
+                .orElseThrow(NotFoundPost::new);
+
+        project.closeProject();
     }
 }

@@ -1,11 +1,14 @@
 package com.insu.backend.global.jwt.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.insu.backend.global.exception.NotFoundMemberId;
 import com.insu.backend.global.jwt.dto.LoginRequest;
 import com.insu.backend.global.jwt.entity.Refresh;
 import com.insu.backend.global.jwt.repository.RefreshRepository;
 import com.insu.backend.global.response.ErrorResponse;
 import com.insu.backend.global.response.SuccessResponse;
+import com.insu.backend.member.entity.Member;
+import com.insu.backend.member.repository.MemberRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletInputStream;
@@ -28,6 +31,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -36,6 +40,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final JWTUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
     private final RefreshRepository refreshRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -83,9 +88,16 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        SuccessResponse successResponse = SuccessResponse.builder()
+        Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(NotFoundMemberId::new);
+
+        String email = member.getEmail();
+        String memberName = member.getMemberName();
+
+        SuccessResponse<Object> successResponse = SuccessResponse.builder()
                         .code(String.valueOf(HttpStatus.OK.value()))
                         .message("로그인에 성공했습니다.")
+                        .data(Map.of("memberId", memberId, "email", email, "memberName", memberName))
                         .build();
 
         response.getWriter().write(new ObjectMapper().writeValueAsString(successResponse));

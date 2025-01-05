@@ -55,6 +55,7 @@ public class MemberService {
                         .gitProfileUrl(request.getGitProfileUrl())
                         .role("ROLE_ADMIN")
                         .isProfileComplete("N")
+                        .isDeleted("N")
                         .build();
 
         memberRepository.save(member);

@@ -4,6 +4,7 @@ import com.insu.backend.global.jwt.filter.JWTFilter;
 import com.insu.backend.global.jwt.filter.JWTUtil;
 import com.insu.backend.global.jwt.filter.LoginFilter;
 import com.insu.backend.global.jwt.repository.RefreshRepository;
+import com.insu.backend.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +32,7 @@ public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
     private final RefreshRepository refreshRepository;
     private final CorsConfigurationSource corsConfigurationSource;
+    private final MemberRepository memberRepository;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
@@ -67,7 +69,7 @@ public class SecurityConfig {
         http.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
-        http.addFilterAt(new LoginFilter(jwtUtil, authenticationManager(authenticationConfiguration), refreshRepository), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAt(new LoginFilter(jwtUtil, authenticationManager(authenticationConfiguration), refreshRepository, memberRepository), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

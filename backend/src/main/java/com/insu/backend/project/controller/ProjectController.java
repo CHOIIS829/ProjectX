@@ -73,4 +73,14 @@ public class ProjectController {
                 .message("프로젝트 삭제 성공")
                 .build());
     }
+
+    @PostMapping("/close/{projectNo}")
+    public ResponseEntity<SuccessResponse<Void>> closeProject(@PathVariable Long projectNo) {
+        projectService.closeProject(projectNo);
+
+        return ResponseEntity.ok(SuccessResponse.<Void>builder()
+                .code("200")
+                .message("프로젝트 종료 성공")
+                .build());
+    }
 }

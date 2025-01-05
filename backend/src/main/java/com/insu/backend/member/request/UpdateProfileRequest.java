@@ -22,6 +22,5 @@ public class UpdateProfileRequest {
     @NotBlank(message = "깃허브 프로필 주소를 입력해주세요.")
     private String gitProfileUrl;
 
-    @NotBlank(message = "스킬을 입력해주세요.")
     private List<String> skills;
 }

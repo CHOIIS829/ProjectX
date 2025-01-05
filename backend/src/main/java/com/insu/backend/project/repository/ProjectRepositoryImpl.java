@@ -40,7 +40,7 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom{
                         keywordLike(projectSearch.getKeyword()),
                         memberEq(projectSearch.getMemberId()),
                         isClosedEq(projectSearch.getIsClosed()),
-                        project.isClosed.eq("N")
+                        project.isDeleted.eq("N")
                 )
                 .orderBy(project.projectNo.desc())
                 .offset(offset)
