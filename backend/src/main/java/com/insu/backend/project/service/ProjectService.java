@@ -1,5 +1,6 @@
 package com.insu.backend.project.service;
 
+import com.insu.backend.global.exception.InvalidPostAuthorException;
 import com.insu.backend.global.exception.NotFoundMemberId;
 import com.insu.backend.global.exception.NotFoundPost;
 import com.insu.backend.global.response.PageResponse;
@@ -19,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -106,18 +108,26 @@ public class ProjectService {
     }
 
     @Transactional
-    public void deleteProject(Long projectNo) {
+    public void deleteProject(Long projectNo/*, String memberId*/) {
         Project project = projectRepository.findById(projectNo)
                 .orElseThrow(NotFoundPost::new);
 
-        project.deleteProject();
+//        if(Objects.equals(project.getMember().getMemberId(), memberId)) {
+            project.deleteProject();
+//        } else {
+//            throw new InvalidPostAuthorException();
+//        }
     }
 
     @Transactional
-    public void closeProject(Long projectNo) {
+    public void closeProject(Long projectNo/*, String memberId*/) {
         Project project = projectRepository.findById(projectNo)
                 .orElseThrow(NotFoundPost::new);
 
-        project.closeProject();
+//        if(Objects.equals(project.getMember().getMemberId(), memberId)) {
+            project.closeProject();
+//        } else {
+//            throw new InvalidPostAuthorException();
+//        }
     }
 }

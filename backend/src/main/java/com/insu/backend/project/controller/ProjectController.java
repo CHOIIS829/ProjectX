@@ -1,5 +1,6 @@
 package com.insu.backend.project.controller;
 
+import com.insu.backend.global.jwt.dto.CustomUserDetails;
 import com.insu.backend.global.response.PageResponse;
 import com.insu.backend.global.response.SuccessResponse;
 import com.insu.backend.project.request.CreateProjectRequest;
@@ -10,6 +11,7 @@ import com.insu.backend.project.service.ProjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -65,8 +67,10 @@ public class ProjectController {
     }
 
     @PostMapping("/delete/{projectNo}")
-    public ResponseEntity<SuccessResponse<Void>> deleteProject(@PathVariable Long projectNo) {
-        projectService.deleteProject(projectNo);
+    public ResponseEntity<SuccessResponse<Void>> deleteProject(@PathVariable Long projectNo/*, @AuthenticationPrincipal CustomUserDetails userDetails*/) {
+        //String memberId = userDetails.getUsername();
+
+        projectService.deleteProject(projectNo/*, memberId*/);
 
         return ResponseEntity.ok(SuccessResponse.<Void>builder()
                 .code("200")
@@ -75,8 +79,10 @@ public class ProjectController {
     }
 
     @PostMapping("/close/{projectNo}")
-    public ResponseEntity<SuccessResponse<Void>> closeProject(@PathVariable Long projectNo) {
-        projectService.closeProject(projectNo);
+    public ResponseEntity<SuccessResponse<Void>> closeProject(@PathVariable Long projectNo/*, @AuthenticationPrincipal CustomUserDetails userDetails*/) {
+//        String memberId = userDetails.getUsername();
+
+        projectService.closeProject(projectNo/*, memberId*/);
 
         return ResponseEntity.ok(SuccessResponse.<Void>builder()
                 .code("200")
