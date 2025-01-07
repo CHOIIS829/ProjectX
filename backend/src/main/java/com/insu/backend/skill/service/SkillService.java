@@ -17,16 +17,17 @@ public class SkillService {
     private final SkillRepository skillRepository;
 
     public void insert(InsertSkill skillList) {
+        List<String> existingSkillNames = skillRepository.findBySkillNameIn(skillList.getSkills())
+                .stream()
+                .map(Skill::getSkillName)
+                .toList();
 
-        skillList.getSkills().forEach(skillName -> {
+        List<Skill> newSkills = skillList.getSkills().stream()
+                .filter(skillName -> !existingSkillNames.contains(skillName))
+                .map(Skill::new)
+                .toList();
 
-            Skill skill = Skill.builder()
-                            .skillName(skillName)
-                            .build();
-
-            skillRepository.save(skill);
-        });
-
+        skillRepository.saveAll(newSkills);
     }
 
     public List<SkillNameResponse> getList(String keyword) {
