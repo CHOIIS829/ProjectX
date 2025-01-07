@@ -2,13 +2,13 @@ package com.insu.backend.member.entity;
 
 import com.insu.backend.global.BaseEntity;
 import com.insu.backend.member.request.UpdateProfileRequest;
+import com.insu.backend.post.entity.Post;
 import com.insu.backend.project.entity.Project;
 import com.insu.backend.skill.entity.Skill;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +46,9 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = ALL, orphanRemoval = true)
     private List<Project> projects = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = ALL, orphanRemoval = true)
+    private List<Post> posts = new ArrayList<>();
+
     @Builder
     public Member(String memberId, String memberPwd, String memberName, String email, /*String phone,*/ String gitProfileUrl, String profileImg, String role, String isProfileComplete, String isDeleted, List<Skill> skills, List<Project> projects) {
         this.memberId = memberId;
@@ -69,6 +72,10 @@ public class Member extends BaseEntity {
 
     public void addProject(Project project) {
         this.projects.add(project);
+    }
+
+    public void addPost(Post post) {
+        this.posts.add(post);
     }
 
     public void changePassword(String password) {
