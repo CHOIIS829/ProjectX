@@ -48,7 +48,23 @@ public class ProjectController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<SuccessResponse<PageResponse<ProjectListResponse>>> getList(@RequestBody ProjectSearchRequest projectSearch) {
+    public ResponseEntity<SuccessResponse<PageResponse<ProjectListResponse>>> getList(
+            @RequestParam(required = false, defaultValue = "1") int page,
+            @RequestParam(required = false, defaultValue = "10") int size,
+            @RequestParam(required = false, defaultValue = "all") String category,
+            @RequestParam(required = false, defaultValue = "all") String isClosed,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String author) {
+
+        ProjectSearchRequest projectSearch = ProjectSearchRequest.builder()
+                .page(page)
+                .size(size)
+                .category(category)
+                .isClosed(isClosed)
+                .keyword(keyword)
+                .author(author)
+                .build();
+
         PageResponse<ProjectListResponse> projects = projectService.getList(projectSearch);
 
         return ResponseEntity.ok(SuccessResponse.<PageResponse<ProjectListResponse>>builder()
