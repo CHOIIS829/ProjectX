@@ -1,8 +1,7 @@
 package com.insu.backend.project.repository;
 
-import com.insu.backend.post.repository.PostRepositoryCustom;
 import com.insu.backend.project.entity.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ProjectRepository extends JpaRepository<Project, Long>, PostRepositoryCustom {
+public interface ProjectRepository extends JpaRepository<Project, Long>, ProjectRepositoryCustom {
 }
