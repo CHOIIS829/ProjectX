@@ -9,9 +9,9 @@ import com.insu.backend.member.repository.MemberRepository;
 import com.insu.backend.project.entity.Project;
 import com.insu.backend.project.repository.ProjectRepository;
 import com.insu.backend.project.request.CreateProjectRequest;
-import com.insu.backend.project.request.ProjectSearch;
-import com.insu.backend.project.response.ProjectList;
-import com.insu.backend.project.response.ProjectOne;
+import com.insu.backend.project.request.ProjectSearchRequest;
+import com.insu.backend.project.response.ProjectListResponse;
+import com.insu.backend.project.response.ProjectOneResponse;
 import com.insu.backend.skill.entity.Skill;
 import com.insu.backend.skill.repository.SkillRepository;
 import jakarta.transaction.Transactional;
@@ -53,19 +53,19 @@ public class ProjectService {
         projectRepository.save(project);
     }
 
-    public Optional<ProjectOne> getProject(Long projectNo) {
+    public Optional<ProjectOneResponse> getProject(Long projectNo) {
         Project project = projectRepository.findById(projectNo)
                 .orElseThrow(NotFoundPost::new);
 
         List<Skill> skills = project.getSkills();
 
         if(project.getIsDeleted().equals("Y")) {
-            return Optional.of(ProjectOne.builder()
+            return Optional.of(ProjectOneResponse.builder()
                     .projectTitle("삭제된 프로젝트입니다.")
                     .build());
         }
 
-        return Optional.of(ProjectOne.builder()
+        return Optional.of(ProjectOneResponse.builder()
                 .projectTitle(project.getProjectTitle())
                 .projectContent(project.getProjectContent())
                 .category(project.getCategory())
@@ -78,12 +78,12 @@ public class ProjectService {
                 .build());
     }
 
-    public PageResponse<ProjectList> getList(ProjectSearch projectSearch) {
+    public PageResponse<ProjectListResponse> getList(ProjectSearchRequest projectSearch) {
         return projectRepository.getList(projectSearch);
     }
 
     @Transactional
-    public ProjectOne editProject(Long projectId, CreateProjectRequest request, String memberId) {
+    public ProjectOneResponse editProject(Long projectId, CreateProjectRequest request, String memberId) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(NotFoundPost::new);
 
@@ -94,7 +94,7 @@ public class ProjectService {
 
         project.editProject(request.getProjectTitle(), request.getProjectContent(), request.getCategory(), skills);
 
-        return ProjectOne.builder()
+        return ProjectOneResponse.builder()
                 .projectTitle(project.getProjectTitle())
                 .projectContent(project.getProjectContent())
                 .category(project.getCategory())

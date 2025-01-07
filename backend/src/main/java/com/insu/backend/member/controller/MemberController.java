@@ -1,7 +1,6 @@
 package com.insu.backend.member.controller;
 
 import com.insu.backend.global.response.SuccessResponse;
-import com.insu.backend.member.request.InsertProfile;
 import com.insu.backend.member.request.UpdateProfileRequest;
 import com.insu.backend.member.service.MemberService;
 import jakarta.validation.Valid;

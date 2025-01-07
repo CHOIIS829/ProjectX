@@ -4,9 +4,9 @@ import com.insu.backend.global.jwt.dto.CustomUserDetails;
 import com.insu.backend.global.response.PageResponse;
 import com.insu.backend.global.response.SuccessResponse;
 import com.insu.backend.project.request.CreateProjectRequest;
-import com.insu.backend.project.request.ProjectSearch;
-import com.insu.backend.project.response.ProjectList;
-import com.insu.backend.project.response.ProjectOne;
+import com.insu.backend.project.request.ProjectSearchRequest;
+import com.insu.backend.project.response.ProjectListResponse;
+import com.insu.backend.project.response.ProjectOneResponse;
 import com.insu.backend.project.service.ProjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -37,10 +37,10 @@ public class ProjectController {
     }
 
     @GetMapping("/get/{projectNo}")
-    public ResponseEntity<SuccessResponse<Optional<ProjectOne>>> getProject(@PathVariable Long projectNo) {
-        Optional<ProjectOne> optionalProject = projectService.getProject(projectNo);
+    public ResponseEntity<SuccessResponse<Optional<ProjectOneResponse>>> getProject(@PathVariable Long projectNo) {
+        Optional<ProjectOneResponse> optionalProject = projectService.getProject(projectNo);
 
-        return ResponseEntity.ok(SuccessResponse.<Optional<ProjectOne>>builder()
+        return ResponseEntity.ok(SuccessResponse.<Optional<ProjectOneResponse>>builder()
                 .code("200")
                 .message("프로젝트 조회 성공")
                 .data(optionalProject)
@@ -48,10 +48,10 @@ public class ProjectController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<SuccessResponse<PageResponse<ProjectList>>> getList(@RequestBody ProjectSearch projectSearch) {
-        PageResponse<ProjectList> projects = projectService.getList(projectSearch);
+    public ResponseEntity<SuccessResponse<PageResponse<ProjectListResponse>>> getList(@RequestBody ProjectSearchRequest projectSearch) {
+        PageResponse<ProjectListResponse> projects = projectService.getList(projectSearch);
 
-        return ResponseEntity.ok(SuccessResponse.<PageResponse<ProjectList>>builder()
+        return ResponseEntity.ok(SuccessResponse.<PageResponse<ProjectListResponse>>builder()
                 .code("200")
                 .message("프로젝트 목록 조회 성공")
                 .data(projects)
@@ -59,12 +59,12 @@ public class ProjectController {
     }
 
     @PatchMapping("/edit/{projectId}")
-    public ResponseEntity<SuccessResponse<ProjectOne>> editProject(@PathVariable Long projectId, @RequestBody @Valid CreateProjectRequest request, @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<SuccessResponse<ProjectOneResponse>> editProject(@PathVariable Long projectId, @RequestBody @Valid CreateProjectRequest request, @AuthenticationPrincipal UserDetails userDetails) {
         String memberId = userDetails.getUsername();
 
-        ProjectOne projectOne = projectService.editProject(projectId, request, memberId);
+        ProjectOneResponse projectOne = projectService.editProject(projectId, request, memberId);
 
-        return ResponseEntity.ok(SuccessResponse.<ProjectOne>builder()
+        return ResponseEntity.ok(SuccessResponse.<ProjectOneResponse>builder()
                 .code("200")
                 .message("프로젝트 수정 성공")
                 .data(projectOne)

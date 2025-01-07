@@ -1,21 +1,23 @@
 package com.insu.backend.project.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
-public class ProjectList {
+public class ProjectOneResponse {
 
-    private Long projectNo;
     private String projectTitle;
+    private String projectContent;
+    private String category;
     private String memberId;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
+    private List<String> skills;
+
 }

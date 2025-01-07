@@ -1,8 +1,8 @@
 package com.insu.backend.post.repository;
 
 import com.insu.backend.global.response.PageResponse;
-import com.insu.backend.project.request.ProjectSearch;
-import com.insu.backend.project.response.ProjectList;
+import com.insu.backend.project.request.ProjectSearchRequest;
+import com.insu.backend.project.response.ProjectListResponse;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -20,13 +20,13 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
 
     @Override
-    public PageResponse<ProjectList> getList(ProjectSearch projectSearch) {
+    public PageResponse<ProjectListResponse> getList(ProjectSearchRequest projectSearch) {
         int offset = (projectSearch.getPage() - 1) * projectSearch.getSize(); // 0, 10, 20, 30
         int size = projectSearch.getSize();
 
-        List<ProjectList> projects = jpaQueryFactory
+        List<ProjectListResponse> projects = jpaQueryFactory
                 .select(
-                        Projections.constructor(ProjectList.class,
+                        Projections.constructor(ProjectListResponse.class,
                                 project.projectNo,
                                 project.projectTitle,
                                 project.member.memberId,
@@ -61,7 +61,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         int totalPages = (int) Math.ceil((double) totalCount / size);
         boolean last = projectSearch.getPage() == totalPages;
 
-        return PageResponse.<ProjectList>builder()
+        return PageResponse.<ProjectListResponse>builder()
                 .content(projects)
                 .page(projectSearch.getPage())
                 .size(size)

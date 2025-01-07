@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProjectSearch {
+public class ProjectSearchRequest {
 
     private Integer page = 1;
     private Integer size = 10;

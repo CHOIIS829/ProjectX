@@ -1,10 +1,10 @@
 package com.insu.backend.project.repository;
 
 import com.insu.backend.global.response.PageResponse;
-import com.insu.backend.project.request.ProjectSearch;
-import com.insu.backend.project.response.ProjectList;
+import com.insu.backend.project.request.ProjectSearchRequest;
+import com.insu.backend.project.response.ProjectListResponse;
 
 public interface ProjectRepositoryCustom {
 
-    PageResponse<ProjectList> getList(ProjectSearch projectSearch);
+    PageResponse<ProjectListResponse> getList(ProjectSearchRequest projectSearch);
 }

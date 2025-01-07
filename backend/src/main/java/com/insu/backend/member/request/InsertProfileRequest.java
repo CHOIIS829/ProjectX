@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
-public class InsertProfile {
+public class InsertProfileRequest {
 
     private String memberId;
 

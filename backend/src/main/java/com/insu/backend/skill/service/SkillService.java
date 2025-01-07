@@ -2,7 +2,7 @@ package com.insu.backend.skill.service;
 
 import com.insu.backend.skill.entity.Skill;
 import com.insu.backend.skill.repository.SkillRepository;
-import com.insu.backend.skill.request.InsertSkill;
+import com.insu.backend.skill.request.InsertSkillRequest;
 import com.insu.backend.skill.response.SkillNameResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ public class SkillService {
 
     private final SkillRepository skillRepository;
 
-    public void insert(InsertSkill skillList) {
+    public void insert(InsertSkillRequest skillList) {
         List<String> existingSkillNames = skillRepository.findBySkillNameIn(skillList.getSkills())
                 .stream()
                 .map(Skill::getSkillName)
