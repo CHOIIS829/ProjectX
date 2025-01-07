@@ -15,7 +15,7 @@ public class ProjectListResponse {
 
     private Long projectNo;
     private String projectTitle;
-    private String memberId;
+    private String author;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
 }

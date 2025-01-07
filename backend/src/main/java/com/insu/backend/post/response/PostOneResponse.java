@@ -1,4 +1,4 @@
-package com.insu.backend.project.response;
+package com.insu.backend.post.response;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -10,14 +10,12 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class ProjectOneResponse {
+public class PostOneResponse {
 
-    private String projectTitle;
-    private String projectContent;
+    private String postTitle;
+    private String postContent;
     private String category;
     private String author;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
-    private List<String> skills;
-
 }
