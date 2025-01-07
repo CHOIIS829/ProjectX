@@ -61,7 +61,14 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom{
         int totalPages = (int) Math.ceil((double) totalCount / size);
         boolean last = projectSearch.getPage() == totalPages;
 
-        return new PageResponse<ProjectList>(projects, projectSearch.getPage(), size, totalCount, totalPages, last);
+        return PageResponse.<ProjectList>builder()
+                .content(projects)
+                .page(projectSearch.getPage())
+                .size(size)
+                .totalCount(totalCount)
+                .totalPages(totalPages)
+                .last(last)
+                .build();
     }
 
     private BooleanExpression categoryEq(String category) {
