@@ -32,8 +32,8 @@ public class ProjectService {
     private final MemberRepository memberRepository;
     private final SkillRepository skillRepository;
 
-    public void createProject(CreateProjectRequest request) {
-        Member member = memberRepository.findByMemberId(request.getMemberId())
+    public void createProject(CreateProjectRequest request, String memberId) {
+        Member member = memberRepository.findByMemberId(memberId)
                 .orElseThrow(NotFoundMemberId::new);
 
         List<Skill> skillS = skillRepository.findBySkillNameIn(request.getSkills()); // {"Java", "Spring"} -> List<Skill>
@@ -83,11 +83,11 @@ public class ProjectService {
     }
 
     @Transactional
-    public ProjectOne editProject(Long projectId, CreateProjectRequest request) {
+    public ProjectOne editProject(Long projectId, CreateProjectRequest request, String memberId) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(NotFoundPost::new);
 
-        Member member = memberRepository.findByMemberId(request.getMemberId())
+        Member member = memberRepository.findByMemberId(memberId)
                 .orElseThrow(NotFoundMemberId::new);
 
         List<Skill> skills = skillRepository.findBySkillNameIn(request.getSkills());
@@ -108,26 +108,26 @@ public class ProjectService {
     }
 
     @Transactional
-    public void deleteProject(Long projectNo/*, String memberId*/) {
+    public void deleteProject(Long projectNo, String memberId) {
         Project project = projectRepository.findById(projectNo)
                 .orElseThrow(NotFoundPost::new);
 
-//        if(Objects.equals(project.getMember().getMemberId(), memberId)) {
+        if(Objects.equals(project.getMember().getMemberId(), memberId)) {
             project.deleteProject();
-//        } else {
-//            throw new InvalidPostAuthorException();
-//        }
+        } else {
+            throw new InvalidPostAuthorException();
+        }
     }
 
     @Transactional
-    public void closeProject(Long projectNo/*, String memberId*/) {
+    public void closeProject(Long projectNo, String memberId) {
         Project project = projectRepository.findById(projectNo)
                 .orElseThrow(NotFoundPost::new);
 
-//        if(Objects.equals(project.getMember().getMemberId(), memberId)) {
+        if(Objects.equals(project.getMember().getMemberId(), memberId)) {
             project.closeProject();
-//        } else {
-//            throw new InvalidPostAuthorException();
-//        }
+        } else {
+            throw new InvalidPostAuthorException();
+        }
     }
 }

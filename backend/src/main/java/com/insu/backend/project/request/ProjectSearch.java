@@ -13,6 +13,6 @@ public class ProjectSearch {
     private String category = "all";
     private String isClosed = "all";
     private String keyword;
-    private String memberId;
+    private String author;
 
 }

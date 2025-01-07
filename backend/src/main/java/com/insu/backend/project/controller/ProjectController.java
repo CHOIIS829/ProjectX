@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -24,8 +25,10 @@ public class ProjectController {
     private final ProjectService projectService;
 
     @PostMapping("/create")
-    public ResponseEntity<SuccessResponse<Void>> createProject(@RequestBody @Valid CreateProjectRequest request) {
-        projectService.createProject(request);
+    public ResponseEntity<SuccessResponse<Void>> createProject(@RequestBody @Valid CreateProjectRequest request, @AuthenticationPrincipal UserDetails userDetails) {
+        String memberId = userDetails.getUsername();
+
+        projectService.createProject(request, memberId);
 
         return ResponseEntity.ok(SuccessResponse.<Void>builder()
                 .code("200")
@@ -56,8 +59,10 @@ public class ProjectController {
     }
 
     @PatchMapping("/edit/{projectId}")
-    public ResponseEntity<SuccessResponse<ProjectOne>> editProject(@PathVariable Long projectId, @RequestBody @Valid CreateProjectRequest request) {
-        ProjectOne projectOne = projectService.editProject(projectId, request);
+    public ResponseEntity<SuccessResponse<ProjectOne>> editProject(@PathVariable Long projectId, @RequestBody @Valid CreateProjectRequest request, @AuthenticationPrincipal UserDetails userDetails) {
+        String memberId = userDetails.getUsername();
+
+        ProjectOne projectOne = projectService.editProject(projectId, request, memberId);
 
         return ResponseEntity.ok(SuccessResponse.<ProjectOne>builder()
                 .code("200")
@@ -67,10 +72,10 @@ public class ProjectController {
     }
 
     @PostMapping("/delete/{projectNo}")
-    public ResponseEntity<SuccessResponse<Void>> deleteProject(@PathVariable Long projectNo/*, @AuthenticationPrincipal CustomUserDetails userDetails*/) {
-        //String memberId = userDetails.getUsername();
+    public ResponseEntity<SuccessResponse<Void>> deleteProject(@PathVariable Long projectNo, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        String memberId = userDetails.getUsername();
 
-        projectService.deleteProject(projectNo/*, memberId*/);
+        projectService.deleteProject(projectNo, memberId);
 
         return ResponseEntity.ok(SuccessResponse.<Void>builder()
                 .code("200")
@@ -79,10 +84,10 @@ public class ProjectController {
     }
 
     @PostMapping("/close/{projectNo}")
-    public ResponseEntity<SuccessResponse<Void>> closeProject(@PathVariable Long projectNo/*, @AuthenticationPrincipal CustomUserDetails userDetails*/) {
-//        String memberId = userDetails.getUsername();
+    public ResponseEntity<SuccessResponse<Void>> closeProject(@PathVariable Long projectNo, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        String memberId = userDetails.getUsername();
 
-        projectService.closeProject(projectNo/*, memberId*/);
+        projectService.closeProject(projectNo, memberId);
 
         return ResponseEntity.ok(SuccessResponse.<Void>builder()
                 .code("200")

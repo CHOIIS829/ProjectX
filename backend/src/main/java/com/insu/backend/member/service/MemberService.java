@@ -92,11 +92,9 @@ public class MemberService {
     }
 
     @Transactional
-    public String insertProfile(InsertProfile request) {
-        Member member = memberRepository.findByMemberId(request.getMemberId())
+    public String insertProfile(MultipartFile file, String memberId) {
+        Member member = memberRepository.findByMemberId(memberId)
                 .orElseThrow(NotFoundMemberId::new);
-
-        MultipartFile file = request.getFile();
 
         try{
             if(file.isEmpty()){
@@ -144,9 +142,9 @@ public class MemberService {
     }
 
     @Transactional
-    public void updateProfile(UpdateProfileRequest request) {
+    public void updateProfile(UpdateProfileRequest request, String memberId) {
 
-        Member member = memberRepository.findByMemberId(request.getMemberId())
+        Member member = memberRepository.findByMemberId(memberId)
                 .orElseThrow(NotFoundMemberId::new);
 
         // 비밀번호 일치여부 확인

@@ -38,7 +38,7 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom{
                 .where(
                         categoryEq(projectSearch.getCategory()),
                         keywordLike(projectSearch.getKeyword()),
-                        memberEq(projectSearch.getMemberId()),
+                        memberEq(projectSearch.getAuthor()),
                         isClosedEq(projectSearch.getIsClosed()),
                         project.isDeleted.eq("N")
                 )
@@ -53,7 +53,7 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom{
                 .where(
                         categoryEq(projectSearch.getCategory()),
                         keywordLike(projectSearch.getKeyword()),
-                        memberEq(projectSearch.getMemberId()),
+                        memberEq(projectSearch.getAuthor()),
                         isClosedEq(projectSearch.getIsClosed())
                 )
                 .fetchOne();

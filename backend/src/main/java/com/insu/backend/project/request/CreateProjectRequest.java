@@ -23,7 +23,7 @@ public class CreateProjectRequest {
     @NotEmpty(message = "스킬을 입력해주세요.")
     private List<String> skills;
 
-    @NotBlank(message = "회원아이디는 필수입니다.")
-    private String memberId;
+//    @NotBlank(message = "회원아이디는 필수입니다.")
+//    private String memberId;
 
 }
