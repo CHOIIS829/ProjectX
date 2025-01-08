@@ -92,6 +92,10 @@ public class ProjectService {
 
         List<Skill> skills = skillRepository.findBySkillNameIn(request.getSkills());
 
+        if(!Objects.equals(project.getMember().getMemberId(), memberId)) {
+            throw new InvalidPostAuthorException();
+        }
+
         project.editProject(request.getProjectTitle(), request.getProjectContent(), request.getCategory(), skills);
 
         return ProjectOneResponse.builder()

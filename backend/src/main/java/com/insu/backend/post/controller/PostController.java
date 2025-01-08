@@ -71,14 +71,25 @@ public class PostController {
     }
 
     @PatchMapping("/edit/{postNo}")
-    public ResponseEntity<SuccessResponse<Void>> editPost() {
+    public ResponseEntity<SuccessResponse<PostOneResponse>> editPost(@PathVariable Long postNo, @RequestBody CreatePostRequest request, @AuthenticationPrincipal UserDetails userDetails) {
+        String memberId = userDetails.getUsername();
 
-        return null;
+        PostOneResponse postOne = postService.editPost(postNo, request, memberId);
+
+        return ResponseEntity.ok(SuccessResponse.<PostOneResponse>builder()
+                .code("200")
+                .message("게시글 수정 성공")
+                .data(postOne)
+                .build());
     }
 
     @PostMapping("/delete/{postNo}")
-    public ResponseEntity<SuccessResponse<Void>> deletePost() {
+    public ResponseEntity<SuccessResponse<Void>> deletePost(@PathVariable Long postNo) {
+        postService.deletePost(postNo);
 
-        return null;
+        return ResponseEntity.ok(SuccessResponse.<Void>builder()
+                .code("200")
+                .message("게시글 삭제 성공")
+                .build());
     }
 }

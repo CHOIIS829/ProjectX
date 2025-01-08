@@ -42,7 +42,7 @@ public class Post extends BaseEntity {
         this.category = category;
     }
 
-    public void deleteProject() {
+    public void deletePost() {
         this.isDeleted = "Y";
     }
 }
