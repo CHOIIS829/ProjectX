@@ -1,4 +1,4 @@
-package com.insu.backend.project.response;
+package com.insu.backend.post.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,10 +10,10 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-public class ProjectListResponse {
+public class PostListResponse {
 
-    private Long projectNo;
-    private String projectTitle;
+    private Long postNo;
+    private String postTitle;
     private String author;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;

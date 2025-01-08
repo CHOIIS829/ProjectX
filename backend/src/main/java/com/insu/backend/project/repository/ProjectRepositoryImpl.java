@@ -1,7 +1,7 @@
 package com.insu.backend.project.repository;
 
 import com.insu.backend.global.response.PageResponse;
-import com.insu.backend.project.request.ProjectSearchRequest;
+import com.insu.backend.global.dto.PageSearchDto;
 import com.insu.backend.project.response.ProjectListResponse;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -20,7 +20,7 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom{
 
 
     @Override
-    public PageResponse<ProjectListResponse> getList(ProjectSearchRequest projectSearch) {
+    public PageResponse<ProjectListResponse> getList(PageSearchDto projectSearch) {
         int offset = (projectSearch.getPage() - 1) * projectSearch.getSize(); // 0, 10, 20, 30
         int size = projectSearch.getSize();
 

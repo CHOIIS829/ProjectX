@@ -9,7 +9,7 @@ import com.insu.backend.member.repository.MemberRepository;
 import com.insu.backend.project.entity.Project;
 import com.insu.backend.project.repository.ProjectRepository;
 import com.insu.backend.project.request.CreateProjectRequest;
-import com.insu.backend.project.request.ProjectSearchRequest;
+import com.insu.backend.global.dto.PageSearchDto;
 import com.insu.backend.project.response.ProjectListResponse;
 import com.insu.backend.project.response.ProjectOneResponse;
 import com.insu.backend.skill.entity.Skill;
@@ -78,7 +78,7 @@ public class ProjectService {
                 .build());
     }
 
-    public PageResponse<ProjectListResponse> getList(ProjectSearchRequest projectSearch) {
+    public PageResponse<ProjectListResponse> getList(PageSearchDto projectSearch) {
         return projectRepository.getList(projectSearch);
     }
 

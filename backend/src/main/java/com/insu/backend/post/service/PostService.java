@@ -1,14 +1,21 @@
 package com.insu.backend.post.service;
 
+import com.insu.backend.global.dto.PageSearchDto;
 import com.insu.backend.global.exception.NotFoundMemberId;
+import com.insu.backend.global.exception.NotFoundPost;
+import com.insu.backend.global.response.PageResponse;
 import com.insu.backend.member.entity.Member;
 import com.insu.backend.member.repository.MemberRepository;
 import com.insu.backend.post.entity.Post;
 import com.insu.backend.post.repository.PostRepository;
 import com.insu.backend.post.request.CreatePostRequest;
+import com.insu.backend.post.response.PostListResponse;
+import com.insu.backend.post.response.PostOneResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -35,8 +42,27 @@ public class PostService {
         postRepository.save(post);
     }
 
-    public void getPost(Long postNo) {
+    public Optional<PostOneResponse> getPost(Long postNo) {
+        Post post = postRepository.findById(postNo)
+                .orElseThrow(NotFoundPost::new);
 
+        if(post.getIsDeleted().equals("Y")) {
+            return Optional.of(PostOneResponse.builder()
+                    .postTitle("삭제된 프로젝트입니다.")
+                    .build());
+        }
 
+        return Optional.of(PostOneResponse.builder()
+                .postTitle(post.getPostTitle())
+                .postContent(post.getPostContent())
+                .category(post.getCategory())
+                .author(post.getMember().getMemberId())
+                .createAt(post.getCreateAt())
+                .updateAt(post.getUpdateAt())
+                .build());
+    }
+
+    public PageResponse<PostListResponse> getList(PageSearchDto postSearch) {
+        return postRepository.getList(postSearch);
     }
 }

@@ -1,10 +1,10 @@
 package com.insu.backend.post.repository;
 
 import com.insu.backend.global.response.PageResponse;
-import com.insu.backend.project.request.ProjectSearchRequest;
-import com.insu.backend.project.response.ProjectListResponse;
+import com.insu.backend.global.dto.PageSearchDto;
+import com.insu.backend.post.response.PostListResponse;
 
 public interface PostRepositoryCustom {
 
-    PageResponse<ProjectListResponse> getList(ProjectSearchRequest projectSearch);
+    PageResponse<PostListResponse> getList(PageSearchDto projectSearch);
 }

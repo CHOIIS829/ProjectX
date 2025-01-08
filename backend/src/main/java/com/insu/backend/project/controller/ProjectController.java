@@ -4,7 +4,7 @@ import com.insu.backend.global.jwt.dto.CustomUserDetails;
 import com.insu.backend.global.response.PageResponse;
 import com.insu.backend.global.response.SuccessResponse;
 import com.insu.backend.project.request.CreateProjectRequest;
-import com.insu.backend.project.request.ProjectSearchRequest;
+import com.insu.backend.global.dto.PageSearchDto;
 import com.insu.backend.project.response.ProjectListResponse;
 import com.insu.backend.project.response.ProjectOneResponse;
 import com.insu.backend.project.service.ProjectService;
@@ -56,7 +56,7 @@ public class ProjectController {
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) String author) {
 
-        ProjectSearchRequest projectSearch = ProjectSearchRequest.builder()
+        PageSearchDto projectSearch = PageSearchDto.builder()
                 .page(page)
                 .size(size)
                 .category(category)
