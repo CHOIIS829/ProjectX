@@ -55,14 +55,7 @@ public class PostService {
                     .build());
         }
 
-        return Optional.of(PostOneResponse.builder()
-                .postTitle(post.getPostTitle())
-                .postContent(post.getPostContent())
-                .category(post.getCategory())
-                .author(post.getMember().getMemberId())
-                .createAt(post.getCreateAt())
-                .updateAt(post.getUpdateAt())
-                .build());
+        return Optional.of(PostOneResponse.toResponse(post));
     }
 
     public PageResponse<PostListResponse> getList(PageSearchDto postSearch) {
@@ -83,14 +76,7 @@ public class PostService {
 
         post.editPost(request.getPostTitle(), request.getPostContent(), request.getCategory());
 
-        return PostOneResponse.builder()
-                .postTitle(post.getPostTitle())
-                .postContent(post.getPostContent())
-                .category(post.getCategory())
-                .author(post.getMember().getMemberId())
-                .createAt(post.getCreateAt())
-                .updateAt(post.getUpdateAt())
-                .build();
+        return PostOneResponse.toResponse(post);
     }
 
     @Transactional

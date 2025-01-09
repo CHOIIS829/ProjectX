@@ -65,17 +65,7 @@ public class ProjectService {
                     .build());
         }
 
-        return Optional.of(ProjectOneResponse.builder()
-                .projectTitle(project.getProjectTitle())
-                .projectContent(project.getProjectContent())
-                .category(project.getCategory())
-                .author(project.getMember().getMemberId())
-                .createAt(project.getCreateAt())
-                .updateAt(project.getUpdateAt())
-                .skills(skills.stream()
-                        .map(Skill::getSkillName)
-                        .toList())
-                .build());
+        return Optional.of(ProjectOneResponse.toResponse(project, skills))
     }
 
     public PageResponse<ProjectListResponse> getList(PageSearchDto projectSearch) {
@@ -98,17 +88,7 @@ public class ProjectService {
 
         project.editProject(request.getProjectTitle(), request.getProjectContent(), request.getCategory(), skills);
 
-        return ProjectOneResponse.builder()
-                .projectTitle(project.getProjectTitle())
-                .projectContent(project.getProjectContent())
-                .category(project.getCategory())
-                .author(project.getMember().getMemberId())
-                .createAt(project.getCreateAt())
-                .updateAt(project.getUpdateAt())
-                .skills(skills.stream()
-                        .map(Skill::getSkillName)
-                        .toList())
-                .build();
+        return ProjectOneResponse.toResponse(project, skills);
     }
 
     @Transactional
