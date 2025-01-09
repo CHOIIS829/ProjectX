@@ -69,6 +69,7 @@ public class PostService {
         return postRepository.getList(postSearch);
     }
 
+    @Transactional
     public PostOneResponse editPost(Long postNo, CreatePostRequest request, String memberId) {
         Post post = postRepository.findById(postNo)
                 .orElseThrow(NotFoundPost::new);
