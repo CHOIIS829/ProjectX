@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.insu.backend.project.entity.QProject.project;
 
@@ -47,7 +48,7 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom{
                 .limit(size)
                 .fetch();
 
-        Long totalCount = jpaQueryFactory
+        Long totalCount = Optional.ofNullable(jpaQueryFactory
                 .select(project.count())
                 .from(project)
                 .where(
@@ -56,7 +57,7 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom{
                         memberEq(projectSearch.getAuthor()),
                         isClosedEq(projectSearch.getIsClosed())
                 )
-                .fetchOne();
+                .fetchOne()).orElse(0L); // count() 결과가 null일 경우 0으로 처리 (Optional 처리
 
         int totalPages = (int) Math.ceil((double) totalCount / size);
         boolean last = projectSearch.getPage() == totalPages;

@@ -25,13 +25,12 @@ public class ExceptionController {
         ErrorResponse body = ErrorResponse.builder()
                 .code(String.valueOf(e.getStatusCode()))
                 .message(e.getMessage())
-                .validation(e.getValidation())
                 .build();
 
         return ResponseEntity.status(statusCode).body(body);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler(MethodArgumentNotValidException.class) // @Valid 유효성 검사 실패 시 발생하는 예외
     public ResponseEntity<ErrorResponse> methodArgumentValidExceptionHandler(MethodArgumentNotValidException e) {
 
         List<String> errors = e.getAllErrors().stream()

@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.insu.backend.post.entity.QPost.post;
 import static com.insu.backend.project.entity.QProject.project;
@@ -48,7 +49,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .limit(size)
                 .fetch();
 
-        Long totalCount = jpaQueryFactory
+        Long totalCount = Optional.ofNullable(jpaQueryFactory
                 .select(post.count())
                 .from(post)
                 .where(
@@ -56,7 +57,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         keywordLike(postSearch.getKeyword()),
                         memberEq(postSearch.getAuthor())
                 )
-                .fetchOne();
+                .fetchOne()).orElse(0L); // count() 결과가 null일 경우 0으로 처리 (Optional 처리)
 
         int totalPages = (int) Math.ceil((double) totalCount / size);
         boolean last = postSearch.getPage() == totalPages;

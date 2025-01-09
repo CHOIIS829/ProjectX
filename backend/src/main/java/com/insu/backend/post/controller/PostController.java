@@ -7,6 +7,7 @@ import com.insu.backend.post.request.CreatePostRequest;
 import com.insu.backend.post.response.PostListResponse;
 import com.insu.backend.post.response.PostOneResponse;
 import com.insu.backend.post.service.PostService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,7 +24,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/write")
-    public ResponseEntity<SuccessResponse<Void>> createPost(@RequestBody CreatePostRequest request, @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<SuccessResponse<Void>> createPost(@RequestBody @Valid CreatePostRequest request, @AuthenticationPrincipal UserDetails userDetails) {
         String memberId = userDetails.getUsername();
 
         postService.createPost(request, memberId);
@@ -71,7 +72,7 @@ public class PostController {
     }
 
     @PatchMapping("/edit/{postNo}")
-    public ResponseEntity<SuccessResponse<PostOneResponse>> editPost(@PathVariable Long postNo, @RequestBody CreatePostRequest request, @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<SuccessResponse<PostOneResponse>> editPost(@PathVariable Long postNo, @RequestBody @Valid CreatePostRequest request, @AuthenticationPrincipal UserDetails userDetails) {
         String memberId = userDetails.getUsername();
 
         PostOneResponse postOne = postService.editPost(postNo, request, memberId);

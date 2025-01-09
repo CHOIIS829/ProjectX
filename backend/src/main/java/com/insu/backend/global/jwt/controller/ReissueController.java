@@ -25,7 +25,7 @@ public class ReissueController {
     private final RefreshRepository refreshRepository;
 
     @PostMapping("/reissue")
-    public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<SuccessResponse<Void>> reissue(HttpServletRequest request, HttpServletResponse response) {
 
         String refresh = null;
 
@@ -73,12 +73,10 @@ public class ReissueController {
         response.setHeader("Authorization", newAccessToken);
         response.addCookie(createCookie("Refresh", newRefreshToken));
 
-        SuccessResponse successResponse = SuccessResponse.builder()
+        return ResponseEntity.ok(SuccessResponse.<Void>builder()
                 .code("200")
-                .message("access-token 재발급 완료")
-                .build();
-
-        return ResponseEntity.status(200).body(successResponse);
+                .message("토큰 재발급 성공")
+                .build());
     }
 
     private void addRefreshEntity(String memberId, String refreshToken, Long expiredMs) {
