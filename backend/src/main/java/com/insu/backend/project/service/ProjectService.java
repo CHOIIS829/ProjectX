@@ -65,7 +65,7 @@ public class ProjectService {
                     .build());
         }
 
-        return Optional.of(ProjectOneResponse.toResponse(project, skills))
+        return Optional.of(ProjectOneResponse.toResponse(project, skills));
     }
 
     public PageResponse<ProjectListResponse> getList(PageSearchDto projectSearch) {
